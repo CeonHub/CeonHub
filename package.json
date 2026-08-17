@@ -1,0 +1,24 @@
+{
+  "name": "ceonhub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CeonHub — a hiring and work marketplace. Monorepo root: convenience scripts only.",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "postinstall": "node scripts/run.mjs install",
+    "setup": "node scripts/run.mjs install",
+    "dev": "node scripts/run.mjs dev",
+    "build": "node scripts/run.mjs build",
+    "start": "node scripts/run.mjs start",
+    "test": "node scripts/run.mjs test",
+    "lint": "node scripts/run.mjs lint",
+    "typecheck": "node scripts/run.mjs typecheck",
+    "db:migrate": "npm --prefix backend run db:migrate",
+    "db:deploy": "npm --prefix backend run db:deploy",
+    "db:seed": "npm --prefix backend run db:seed",
+    "db:reset": "npm --prefix backend run db:reset",
+    "db:studio": "npm --prefix backend run db:studio"
+  }
+}

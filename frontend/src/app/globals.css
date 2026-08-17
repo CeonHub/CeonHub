@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/**
+ * CeonHub design tokens.
+ *
+ * One restrained palette: a deep "ink" neutral for text and structure, a serious
+ * blue for actions, and three semantic colours (available / immediate / danger)
+ * that carry meaning in the marketplace rather than decoration.
+ *
+ * No web fonts are loaded: the system stack renders instantly and removes a
+ * build-time network dependency.
+ */
+@theme {
+  --color-ink-950: #080d16;
+  --color-ink-900: #0e1726;
+  --color-ink-800: #1b2637;
+  --color-ink-700: #2c3a4f;
+  --color-ink-600: #48566b;
+  --color-ink-500: #64748b;
+  --color-ink-400: #94a3b8;
+  --color-ink-300: #c3ccd8;
+  --color-ink-200: #e1e6ee;
+  --color-ink-100: #eef1f6;
+  --color-ink-50: #f7f9fc;
+
+  --color-brand-900: #0f2668;
+  --color-brand-800: #143286;
+  --color-brand-700: #17399a;
+  --color-brand-600: #1e4bc4;
+  --color-brand-500: #2b5fe3;
+  --color-brand-200: #c3d4fb;
+  --color-brand-100: #dfe8fe;
+  --color-brand-50: #eff4ff;
+
+  --color-available-700: #05593f;
+  --color-available-600: #067a55;
+  --color-available-100: #d6f5e9;
+
+  --color-immediate-700: #8a3c07;
+  --color-immediate-600: #b45309;
+  --color-immediate-100: #fdeecf;
+
+  --color-danger-700: #8f1d18;
+  --color-danger-600: #b42318;
+  --color-danger-100: #fde4e2;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-card: 0.625rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* One visible focus style everywhere, including keyboard navigation. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+}
