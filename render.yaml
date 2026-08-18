@@ -57,8 +57,9 @@ services:
         sync: false
 
       # Only once the site and API share a parent domain. Until then leave both
-      # unset: production defaults to SameSite=None, which is what two unrelated
-      # hostnames (*.vercel.app and *.onrender.com) require.
+      # blank: production defaults to SameSite=None, which is what two unrelated
+      # hostnames (*.vercel.app and *.onrender.com) require. Leaving any prompt
+      # blank is safe — the backend treats a blank variable as an unset one.
       - key: COOKIE_DOMAIN # .your-domain.com
         sync: false
       - key: COOKIE_SAMESITE # lax

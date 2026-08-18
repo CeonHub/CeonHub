@@ -4,14 +4,18 @@ CeonHub is two ordinary Node applications and one PostgreSQL database. That is t
 infrastructure: no Kubernetes, no Swarm, no broker, no cache tier.
 
 ```
-   Vercel (or any Node host)        Render / Railway / Fly.io        Managed PostgreSQL
+        Vercel  (Hobby)                Render  (free tier)              Neon  (free tier)
    ┌──────────────────────┐         ┌──────────────────────┐         ┌────────────────┐
    │  frontend  (Next.js) │ ──────► │  backend  (Express)  │ ──────► │   PostgreSQL   │
    └──────────────────────┘  HTTPS  └──────────────────────┘         └────────────────┘
 ```
 
-Deploy in this order: **database → backend → frontend**. The frontend bakes the API URL in
-at build time, so the API should exist first.
+Resumes go to Cloudinary rather than to disk, so no host needs a persistent volume.
+
+Work through the sections in order. Each one produces a value the next needs, and the
+frontend bakes the API URL in at build time, so the API must exist before it:
+
+**GitHub → Neon → Cloudinary → LinkedIn → Render → Vercel → close the loop → domain**
 
 ### A stack that is free and needs no card
 
@@ -32,7 +36,7 @@ non-commercial projects. CeonHub is a hiring marketplace, so the moment it takes
 serves paying clients, or operates as a business, Hobby is the wrong plan and Vercel's terms
 require Pro. While it is a portfolio piece or a private demo, Hobby is fine. If it becomes
 commercial and Pro is not an option, the frontend is a plain Next.js server — Render can run
-it on a second free web service using the same settings as section 3, with build `npm ci &&
+it on a second free web service using the same settings as section 5, with build `npm ci &&
 npm run build` and start `npm start`.
 
 **Cold starts are the real cost of free.** A visitor arriving after an idle period waits for
@@ -49,7 +53,7 @@ free service.
 GitHub stores the code and triggers deploys. It does **not** run the application and it is
 not where the domain is connected — GitHub Pages serves static files only, and CeonHub
 needs two Node processes and a PostgreSQL database. The domain is attached at the hosts
-(section 5), not here.
+(section 8), not here.
 
 **Create the organisation.** [github.com/organizations/plan](https://github.com/organizations/plan)
 > **Free**. A free organisation gives unlimited public and private repositories, and
@@ -92,98 +96,41 @@ request. It needs no secrets. Turning on branch protection for the default branc
 
 ---
 
-## 2. Database
+## 2. Database (Neon)
 
-Any managed PostgreSQL 14+ works (Neon, Supabase, Render, Railway, RDS, …). Create the
-database and copy its connection string into the backend's `DATABASE_URL`.
+1. Sign up at [neon.tech](https://neon.tech) with your GitHub account.
+2. Create a project named `ceonhub`. Pick the region **nearest the Render region you will
+   use in step 5** — every query crosses that gap.
+3. Open **Connection Details** and copy the connection string. **Turn off "Pooled
+   connection"** and take the direct one: the Render build runs `prisma migrate deploy`, and
+   migrations fail through a transaction pooler. The API is one long-lived Node process, so
+   it gains nothing from the pooler anyway.
+4. Make sure the string ends with `?sslmode=require`; Neon refuses plaintext connections.
 
-Most managed providers require TLS; if the connection is refused, append `?sslmode=require`
-to the URL.
+You now hold **`DATABASE_URL`** — it goes into Render in step 5.
+
+Free plan: 0.5 GB storage and 100 compute-hours a month, and the database sleeps after
+5 minutes idle, so the first query after a quiet spell takes a few seconds.
 
 ---
 
-## 3. Backend
+## 3. File storage (Cloudinary)
 
-Any platform that can run a Node service. Settings:
+Resumes must not live on the API's disk: Render rebuilds the filesystem on every deploy and
+the uploads go with it. With `STORAGE_DRIVER=cloudinary` the API uploads each resume to
+Cloudinary and stores **only the resulting URL and public id** in Postgres — no file bytes
+ever reach the database, which is what keeps a free database tier viable.
 
-| Setting | Value |
-| --- | --- |
-| Root directory | `backend` |
-| Install command | `npm ci` |
-| Build command | `npm run build` |
-| Start command | `npm start` |
-| Release / pre-deploy command | `npm run db:deploy` |
-| Health check path | `/health` |
-| Node version | 20.19+, 22.12+ or 24+ |
+1. Create a free account at [cloudinary.com](https://cloudinary.com). No card is asked for.
+2. Go to **Programmable Media > API Keys** and copy the **API environment variable**. It is
+   already in the exact form the backend wants:
+   `cloudinary://<api_key>:<api_secret>@<cloud_name>`.
 
-`npm run build` runs `prisma generate` and then `tsc`. The Prisma CLI is a runtime
-dependency on purpose, so `npm run db:deploy` (i.e. `prisma migrate deploy`) can run as a
-release step on the host.
+You now hold **`CLOUDINARY_URL`** — it goes into Render in step 5.
 
-**Environment variables** (see the README for the full table):
-
-```ini
-NODE_ENV=production
-PORT=4000                      # or whatever the platform injects
-DATABASE_URL=postgresql://…
-JWT_SECRET=<48 random bytes>   # node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
-FRONTEND_URL=https://ceonhub.example.com
-CORS_ORIGIN=https://ceonhub.example.com
-API_URL=https://api.ceonhub.example.com
-EMAIL_DRIVER=console           # until a real provider is implemented
-
-# Resumes. Without this the files land on the container's disk and are lost
-# on the next deploy — see "File storage" below.
-STORAGE_DRIVER=cloudinary
-CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
-
-# Required — candidates and employers can only sign in with LinkedIn.
-LINKEDIN_CLIENT_ID=…
-LINKEDIN_CLIENT_SECRET=…
-LINKEDIN_CALLBACK_URL=https://api.ceonhub.example.com/api/auth/linkedin/callback
-```
-
-**Without these, nobody but an administrator can sign in.** Register that exact callback URL
-on the app's **Auth** tab in the
-[LinkedIn developer portal](https://www.linkedin.com/developers/apps) — each environment
-needs its own entry, and the value must match character for character. Keep the client
-secret in the platform's secret store, never in the repository.
-
-Never reuse the development `JWT_SECRET`: changing it invalidates every existing session,
-which is exactly what you want if it ever leaks.
-
-### Cookies across two domains — the part that catches people
-
-The site and the API normally live on different domains (`ceonhub.example.com` and
-`api.ceonhub.example.com`). A cookie sent from one to the other is a cross-site cookie, so:
-
-* `COOKIE_SAMESITE` must be `none` — the default when `NODE_ENV=production`;
-* `SameSite=None` requires `Secure`, so **both** ends must be served over HTTPS;
-* `CORS_ORIGIN` must contain the site's exact origin, including scheme (and port, if any).
-
-If both ends share a parent domain, you can tighten this: set `COOKIE_DOMAIN=.example.com`
-and `COOKIE_SAMESITE=lax`.
-
-Symptom of getting this wrong: sign-in appears to succeed, but every following request comes
-back `401`.
-
-### File storage (Cloudinary)
-
-Resumes must not live on the API's disk in production: Render, Railway and Fly all rebuild
-the filesystem on every deploy, and the uploads go with it. Set `STORAGE_DRIVER=cloudinary`
-and the API uploads each resume to Cloudinary instead, storing **only the resulting URL and
-public id** in Postgres — no file bytes ever reach the database, so a free database tier is
-enough.
-
-1. Create a free account at [cloudinary.com](https://cloudinary.com) (25 GB storage and
-   25 GB monthly bandwidth on the free plan; a resume is a few hundred kilobytes).
-2. Copy **API environment variable** from the dashboard — Programmable Media > API Keys.
-   It already has the `cloudinary://<api_key>:<api_secret>@<cloud_name>` form.
-3. Set it as `CLOUDINARY_URL` in the platform's secret store, together with
-   `STORAGE_DRIVER=cloudinary`. Keep `MAX_UPLOAD_MB` at 10 or below: the free plan rejects
-   raw files above 10 MB.
-4. Optionally set `CLOUDINARY_FOLDER` (default `ceonhub`) to keep staging and production
-   apart inside one account.
+`STORAGE_DRIVER=cloudinary` and `MAX_UPLOAD_MB=5` are already set for you in `render.yaml`.
+Keep the cap at 10 or below: the free plan rejects raw files above 10 MB. Optionally set
+`CLOUDINARY_FOLDER` (default `ceonhub`) to keep staging and production apart in one account.
 
 The backend refuses to start with `STORAGE_DRIVER=cloudinary` and no credentials, so a
 misconfiguration shows up in the deploy log rather than the first time someone uploads a CV.
@@ -199,30 +146,159 @@ nothing to migrate.
 
 ---
 
-## 4. Frontend
+## 4. Sign-in (LinkedIn)
 
-| Setting | Value |
-| --- | --- |
-| Root directory | `frontend` |
-| Install command | `npm ci` |
-| Build command | `npm run build` |
-| Start command | `npm start` (not needed on Vercel) |
-| Node version | 20.19+ |
+**Start this early — it is the step most likely to hold you up.** Candidates and employers
+can *only* sign in with LinkedIn; without it the site works but nobody except an
+administrator can get in.
 
-```ini
-NEXT_PUBLIC_API_URL=https://api.ceonhub.example.com
-NEXT_PUBLIC_SITE_URL=https://ceonhub.example.com
-```
+1. A LinkedIn app must be attached to a **LinkedIn Company Page**, and a page admin has to
+   verify the app before it will issue tokens. If you do not have a page, create one first.
+2. Go to [linkedin.com/developers/apps](https://www.linkedin.com/developers/apps) and create
+   an app: name, the company page, a logo.
+3. On the **Products** tab, add **"Sign In with LinkedIn using OpenID Connect"**. That is
+   the one that matters — it grants exactly the `openid profile email` scopes the backend
+   requests, and access to the `/v2/userinfo` endpoint it reads the profile from. No other
+   LinkedIn product is needed.
+4. On the **Auth** tab, copy the **Client ID** and the **Primary Client Secret**.
 
-Both are **build-time** values inlined into the browser bundle — changing them requires a
-rebuild, not just a restart. Neither may contain a secret.
+You now hold **`LINKEDIN_CLIENT_ID`** and **`LINKEDIN_CLIENT_SECRET`** — both go into Render
+in step 5. The redirect URL is registered in step 7, once the API has a hostname.
 
-On Vercel, set the root directory to `frontend`; the framework is detected automatically.
-Any other Node host works too: `npm run build && npm start`.
+If LinkedIn is not ready yet, leave both blank in Render and carry on. The backend treats a
+blank value as absent, boots with LinkedIn switched off, and the sign-in buttons disappear
+from the site instead of erroring. Fill them in later and redeploy.
 
 ---
 
-## 5. Custom domain
+## 5. Backend (Render)
+
+1. Sign up at [render.com](https://render.com) with GitHub, and grant it access to the
+   organisation that owns the repository.
+2. **New > Blueprint**, and pick the CeonHub repository. Render finds `render.yaml` and
+   reads the build commands, health check and instance plan from it.
+3. If Oregon is not the right region, change `region:` in `render.yaml` and push before
+   applying — ideally matching the Neon region from step 2.
+4. Render prompts for every value marked `sync: false`. Fill them in like this:
+
+| Prompt | What to paste | From |
+| --- | --- | --- |
+| `DATABASE_URL` | The Neon direct connection string | Step 2 |
+| `CLOUDINARY_URL` | `cloudinary://key:secret@cloud` | Step 3 |
+| `LINKEDIN_CLIENT_ID` | Client ID, or leave blank | Step 4 |
+| `LINKEDIN_CLIENT_SECRET` | Primary Client Secret, or leave blank | Step 4 |
+| `API_URL` | `https://ceonhub-api.onrender.com` | Corrected in step 7 if Render assigns another name |
+| `FRONTEND_URL` | Leave blank | Filled in step 7 |
+| `CORS_ORIGIN` | Leave blank | Filled in step 7 |
+| `LINKEDIN_CALLBACK_URL` | Leave blank | Defaults to `<API_URL>/api/auth/linkedin/callback` |
+| `COOKIE_DOMAIN` | Leave blank | Only used once you have a domain (step 8) |
+| `COOKIE_SAMESITE` | Leave blank | Production defaults to `none`, correct across `.vercel.app` and `.onrender.com` |
+
+Blank is safe everywhere above: the backend strips blank variables before validating, so a
+blank field behaves exactly like an unset one.
+
+You are not asked for `JWT_SECRET` — Render generates it and keeps it. Do not change it
+later unless you mean to sign every existing session out. `NODE_ENV`, `STORAGE_DRIVER` and
+`MAX_UPLOAD_MB` are already fixed in `render.yaml`.
+
+5. **Apply.** The first deploy runs `npm ci && npm run build && npm run db:deploy`, so your
+   Neon database gets its tables during the build. Watch the log — a failed migration fails
+   the deploy, which is what you want.
+6. Copy the service URL Render assigns (usually `https://ceonhub-api.onrender.com`) and open
+   `<that URL>/health`. You want `{"success":true,…}`. Allow a minute; free instances are
+   slow to wake.
+
+<details>
+<summary>Setting it up by hand instead of from the blueprint</summary>
+
+| Setting | Value |
+| --- | --- |
+| Root directory | `backend` |
+| Build command | `npm ci && npm run build && npm run db:deploy` |
+| Start command | `npm start` |
+| Health check path | `/health` |
+| Instance type | Free |
+| Node version | 20.19+, 22.12+ or 24+ |
+
+`npm run build` runs `prisma generate` then `tsc`. The Prisma CLI is a runtime dependency on
+purpose, so `db:deploy` can run on the host. On a paid instance, move `db:deploy` out of the
+build into a pre-deploy command.
+
+</details>
+
+---
+
+## 6. Frontend (Vercel)
+
+1. Sign up at [vercel.com](https://vercel.com) with GitHub.
+2. **Add New > Project**, and import the CeonHub repository.
+3. Set **Root Directory to `frontend`**. This is the one setting that must not be missed —
+   left at the repository root the build fails, because there is no Next.js app there.
+   Vercel detects the framework and the build command on its own.
+4. Add the environment variables:
+
+| Name | Value |
+| --- | --- |
+| `NEXT_PUBLIC_API_URL` | The Render URL from step 5, e.g. `https://ceonhub-api.onrender.com` |
+| `NEXT_PUBLIC_SITE_URL` | Leave for now — set in step 7, once Vercel has assigned the URL |
+
+5. **Deploy**, then copy the `https://<project>.vercel.app` URL it gives you.
+
+Both variables are **build-time** values compiled into the browser bundle. Editing them in
+the dashboard changes nothing until you redeploy — the single most common reason a correctly
+configured site still calls the wrong API. Neither may contain a secret: anything prefixed
+`NEXT_PUBLIC_` is visible to every visitor.
+
+---
+
+## 7. Close the loop
+
+Both halves now exist but do not yet trust each other. Three edits, in any order:
+
+**On Render** (Environment tab) — saving triggers a redeploy:
+
+```ini
+FRONTEND_URL=https://<project>.vercel.app
+CORS_ORIGIN=https://<project>.vercel.app
+API_URL=https://<the real Render URL>     # only if it differs from what you guessed
+```
+
+Miss this and the site loads perfectly while every API call fails CORS.
+
+**On Vercel** (Settings > Environment Variables), then **Redeploy**:
+
+```ini
+NEXT_PUBLIC_SITE_URL=https://<project>.vercel.app
+```
+
+**On LinkedIn** (Auth tab > Authorized redirect URLs), add exactly:
+
+```
+https://<the real Render URL>/api/auth/linkedin/callback
+```
+
+LinkedIn matches character for character — no trailing slash, right scheme. Sign-in fails
+with `redirect_uri_mismatch` until it matches.
+
+### Where every value ends up
+
+| Value | Comes from | Lives in | Under the name |
+| --- | --- | --- | --- |
+| Postgres connection string | Neon | Render | `DATABASE_URL` |
+| Cloudinary credentials | Cloudinary | Render | `CLOUDINARY_URL` |
+| LinkedIn client id and secret | LinkedIn | Render | `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET` |
+| The API's own public URL | Render | Render | `API_URL` |
+| The site's public URL | Vercel | Render | `FRONTEND_URL`, `CORS_ORIGIN` |
+| The API's public URL | Render | Vercel | `NEXT_PUBLIC_API_URL` |
+| The site's public URL | Vercel | Vercel | `NEXT_PUBLIC_SITE_URL` |
+| The callback URL | Render | LinkedIn | Authorized redirect URL |
+| Session signing key | Render generates it | Render | `JWT_SECRET` |
+
+Nothing on this list belongs in the repository. Every secret lives in its host's dashboard.
+
+---
+
+## 8. Custom domain
 
 Buy the domain anywhere (Namecheap, Porkbun, Cloudflare, …); the registrar does not matter.
 **Deploy first and attach the domain afterwards** — both hosts need a running service before
@@ -284,7 +360,7 @@ until it does.
 
 ---
 
-## 6. Docker
+## 9. Docker
 
 `docker-compose.yml` runs the whole stack locally:
 
@@ -311,7 +387,7 @@ Note the build argument: the frontend image bakes the API URL in at build time.
 
 ---
 
-## 7. Post-deployment checklist
+## 10. Post-deployment checklist
 
 1. `GET https://api.…/health` returns `{"success":true,…}`.
 2. `GET https://api.…/api/auth/providers` returns `{"linkedin":true}`. If it says `false`,
@@ -343,7 +419,7 @@ Note the build argument: the frontend image bakes the API URL in at build time.
 
 ---
 
-## 8. Operating notes
+## 11. Operating notes
 
 **Migrations.** Always `npm run db:deploy` in production (never `db:migrate`, which is
 interactive and can reset data). Run it as a release step so it completes before the new

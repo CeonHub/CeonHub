@@ -143,7 +143,7 @@ to start with an invalid configuration.
 | `LINKEDIN_CLIENT_ID` | **yes** | — | Without it no candidate or employer can sign in |
 | `LINKEDIN_CLIENT_SECRET` | **yes** | — | LinkedIn app client secret |
 | `LINKEDIN_CALLBACK_URL` | no | `<API_URL>/api/auth/linkedin/callback` | Must match a Redirect URL registered on the LinkedIn app |
-| `STORAGE_DRIVER` | no | `local` | `local` (disk, development) \| `cloudinary` (production — see [deployment.md](docs/deployment.md#file-storage-cloudinary)) |
+| `STORAGE_DRIVER` | no | `local` | `local` (disk, development) \| `cloudinary` (production — see [deployment.md](docs/deployment.md#3-file-storage-cloudinary)) |
 | `STORAGE_LOCAL_DIR` | no | `storage` | Upload directory, relative to `backend/`. Local driver only |
 | `MAX_UPLOAD_MB` | no | `5` | Maximum resume size. Cloudinary's free plan rejects raw files over 10 MB |
 | `CLOUDINARY_URL` | with `cloudinary` | — | `cloudinary://<api_key>:<api_secret>@<cloud_name>`, copied from the Cloudinary dashboard |

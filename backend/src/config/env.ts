@@ -64,8 +64,20 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
+/**
+ * A hosting dashboard sends a variable you left blank as an empty string rather than
+ * omitting it. Without this, a blank optional field fails validation and the process
+ * refuses to boot — and, worse, an empty LINKEDIN_CLIENT_ID would crash instead of
+ * switching the feature off the way `linkedin.enabled` intends. Blank means absent.
+ */
+function withoutBlanks(source: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  return Object.fromEntries(
+    Object.entries(source).filter(([, value]) => value?.trim() !== ""),
+  );
+}
+
 function loadEnv(): Env {
-  const parsed = envSchema.safeParse(process.env);
+  const parsed = envSchema.safeParse(withoutBlanks(process.env));
 
   if (!parsed.success) {
     const details = parsed.error.issues
