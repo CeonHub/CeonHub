@@ -1,0 +1,65 @@
+# Render Blueprint for the CeonHub API.
+#
+# In Render: New > Blueprint > pick this repository. Render reads this file and
+# creates the service with the right commands already filled in; it then asks you
+# for each value marked `sync: false` (they are secrets and must never be in git).
+#
+# Only the backend lives here. The frontend goes to Vercel, which reads its own
+# settings from the dashboard — see docs/deployment.md.
+services:
+  - type: web
+    name: ceonhub-api
+    runtime: node
+    plan: free # 750 instance hours/month; sleeps after 15 minutes idle
+    region: oregon # pick the one nearest your users
+    rootDir: backend
+    healthCheckPath: /health
+    autoDeploy: true
+
+    # `npm run build` runs `prisma generate` then `tsc`. Migrations run here too:
+    # on a paid instance you would move `db:deploy` to a preDeployCommand, but
+    # free instances do not have one, and a failed migration correctly fails the
+    # deploy either way.
+    buildCommand: npm ci && npm run build && npm run db:deploy
+    startCommand: npm start
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Render generates this once and keeps it. Changing it signs everyone out.
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STORAGE_DRIVER
+        value: cloudinary
+      # Cloudinary's free plan rejects raw files over 10 MB.
+      - key: MAX_UPLOAD_MB
+        value: "5"
+
+      # Prompted in the dashboard on first deploy, and stored only there.
+      - key: DATABASE_URL # Neon connection string, with ?sslmode=require
+        sync: false
+      - key: CLOUDINARY_URL # cloudinary://<key>:<secret>@<cloud_name>
+        sync: false
+      - key: LINKEDIN_CLIENT_ID
+        sync: false
+      - key: LINKEDIN_CLIENT_SECRET
+        sync: false
+
+      # URLs. Set these to the .onrender.com / .vercel.app names for the first
+      # deploy, then change them to your domain once DNS resolves.
+      - key: API_URL # https://api.your-domain.com
+        sync: false
+      - key: FRONTEND_URL # https://your-domain.com
+        sync: false
+      - key: CORS_ORIGIN # https://your-domain.com,https://www.your-domain.com
+        sync: false
+      - key: LINKEDIN_CALLBACK_URL # <API_URL>/api/auth/linkedin/callback
+        sync: false
+
+      # Only once the site and API share a parent domain. Until then leave both
+      # unset: production defaults to SameSite=None, which is what two unrelated
+      # hostnames (*.vercel.app and *.onrender.com) require.
+      - key: COOKIE_DOMAIN # .your-domain.com
+        sync: false
+      - key: COOKIE_SAMESITE # lax
+        sync: false

@@ -143,9 +143,14 @@ to start with an invalid configuration.
 | `LINKEDIN_CLIENT_ID` | **yes** | — | Without it no candidate or employer can sign in |
 | `LINKEDIN_CLIENT_SECRET` | **yes** | — | LinkedIn app client secret |
 | `LINKEDIN_CALLBACK_URL` | no | `<API_URL>/api/auth/linkedin/callback` | Must match a Redirect URL registered on the LinkedIn app |
-| `STORAGE_DRIVER` | no | `local` | Only `local` ships with the MVP |
-| `STORAGE_LOCAL_DIR` | no | `storage` | Upload directory, relative to `backend/` |
-| `MAX_UPLOAD_MB` | no | `5` | Maximum resume size |
+| `STORAGE_DRIVER` | no | `local` | `local` (disk, development) \| `cloudinary` (production — see [deployment.md](docs/deployment.md#file-storage-cloudinary)) |
+| `STORAGE_LOCAL_DIR` | no | `storage` | Upload directory, relative to `backend/`. Local driver only |
+| `MAX_UPLOAD_MB` | no | `5` | Maximum resume size. Cloudinary's free plan rejects raw files over 10 MB |
+| `CLOUDINARY_URL` | with `cloudinary` | — | `cloudinary://<api_key>:<api_secret>@<cloud_name>`, copied from the Cloudinary dashboard |
+| `CLOUDINARY_CLOUD_NAME` | with `cloudinary` | — | Alternative to `CLOUDINARY_URL`; set all three together |
+| `CLOUDINARY_API_KEY` | with `cloudinary` | — | Alternative to `CLOUDINARY_URL` |
+| `CLOUDINARY_API_SECRET` | with `cloudinary` | — | Alternative to `CLOUDINARY_URL`. Never expose it to the browser |
+| `CLOUDINARY_FOLDER` | no | `ceonhub` | Top-level folder, so one account can host staging and production |
 | `EMAIL_DRIVER` | no | `console` | `console` (log the message) \| `noop` (send nothing) |
 | `EMAIL_FROM` | no | `CeonHub <no-reply@ceonhub.local>` | From header used by drivers |
 | `RATE_LIMIT_WINDOW_MINUTES` | no | `15` | Rate-limit window |

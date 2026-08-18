@@ -1,0 +1,96 @@
+# Runs on every push and pull request. Catches a broken commit here rather than
+# on Vercel or Render, where a failed build takes the site down with it.
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+# A new push to the same branch cancels the run still in flight.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    # The suite is a set of integration tests against a real PostgreSQL, so CI
+    # brings one up rather than mocking Prisma.
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ceonhub
+          POSTGRES_PASSWORD: ceonhub
+          POSTGRES_DB: ceonhub_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ceonhub"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://ceonhub:ceonhub@localhost:5432/ceonhub_test
+      # Test-only values. The real ones live in the host's secret store.
+      JWT_SECRET: ci-secret-that-is-at-least-thirty-two-characters-long
+      NODE_ENV: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      # `npm ci` triggers postinstall -> prisma generate, so the client exists
+      # before typecheck runs.
+      - run: npm ci
+        working-directory: backend
+
+      - run: npm run typecheck
+        working-directory: backend
+
+      - run: npm run lint
+        working-directory: backend
+
+      # globalSetup runs `prisma migrate deploy` against the service above.
+      - run: npm test
+        working-directory: backend
+
+      - run: npm run build
+        working-directory: backend
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+        working-directory: frontend
+
+      - run: npm run typecheck
+        working-directory: frontend
+
+      - run: npm run lint
+        working-directory: frontend
+
+      # NEXT_PUBLIC_* are baked into the bundle at build time; these are
+      # placeholders so the build can run, not the deployed values.
+      - run: npm run build
+        working-directory: frontend
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:4000
+          NEXT_PUBLIC_SITE_URL: http://localhost:3000

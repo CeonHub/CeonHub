@@ -37,9 +37,22 @@ const envSchema = z.object({
   /** Must match a Redirect URL registered in the LinkedIn developer app, exactly. */
   LINKEDIN_CALLBACK_URL: z.url().optional(),
 
-  STORAGE_DRIVER: z.enum(["local"]).default("local"),
+  STORAGE_DRIVER: z.enum(["local", "cloudinary"]).default("local"),
   STORAGE_LOCAL_DIR: z.string().default("storage"),
   MAX_UPLOAD_MB: z.coerce.number().int().positive().max(25).default(5),
+
+  /**
+   * Cloudinary, used when STORAGE_DRIVER=cloudinary. Either set CLOUDINARY_URL
+   * (the "API environment variable" the Cloudinary dashboard hands you) or the
+   * three fields separately — see the refinement below, which refuses to start
+   * with a cloudinary driver and no credentials.
+   */
+  CLOUDINARY_URL: z.string().min(1).optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  CLOUDINARY_API_KEY: z.string().min(1).optional(),
+  CLOUDINARY_API_SECRET: z.string().min(1).optional(),
+  /** Top-level folder, so one Cloudinary account can host several environments. */
+  CLOUDINARY_FOLDER: z.string().default("ceonhub"),
 
   EMAIL_DRIVER: z.enum(["console", "noop"]).default("console"),
   EMAIL_FROM: z.string().default("CeonHub <no-reply@ceonhub.local>"),
@@ -84,3 +97,51 @@ export const linkedin = {
   clientSecret: env.LINKEDIN_CLIENT_SECRET ?? "",
   callbackUrl: env.LINKEDIN_CALLBACK_URL ?? `${env.API_URL}/api/auth/linkedin/callback`,
 } as const;
+
+/**
+ * Cloudinary credentials, accepted in either of the two forms the dashboard offers:
+ * the single CLOUDINARY_URL ("cloudinary://key:secret@cloud-name") or the three
+ * fields spelled out. Resolved once, here, so no other file parses them.
+ *
+ * Missing credentials are only fatal when the driver is actually cloudinary — a
+ * local development setup should not need a Cloudinary account to boot.
+ */
+function loadCloudinary() {
+  let cloudName = env.CLOUDINARY_CLOUD_NAME ?? "";
+  let apiKey = env.CLOUDINARY_API_KEY ?? "";
+  let apiSecret = env.CLOUDINARY_API_SECRET ?? "";
+
+  if (env.CLOUDINARY_URL) {
+    try {
+      const url = new URL(env.CLOUDINARY_URL);
+      if (url.protocol !== "cloudinary:") throw new Error("expected the cloudinary:// scheme");
+      // The explicit fields win, so a deployment can override one part of the URL.
+      cloudName ||= decodeURIComponent(url.hostname);
+      apiKey ||= decodeURIComponent(url.username);
+      apiSecret ||= decodeURIComponent(url.password);
+    } catch (error) {
+      throw new Error(
+        `Invalid CLOUDINARY_URL: ${(error as Error).message}. ` +
+          "Expected cloudinary://<api_key>:<api_secret>@<cloud_name>.",
+      );
+    }
+  }
+
+  if (env.STORAGE_DRIVER === "cloudinary" && !(cloudName && apiKey && apiSecret)) {
+    throw new Error(
+      "Invalid environment configuration:\n" +
+        "  - STORAGE_DRIVER=cloudinary requires CLOUDINARY_URL, or all of " +
+        "CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET.\n\n" +
+        "See backend/.env.example.",
+    );
+  }
+
+  return {
+    cloudName,
+    apiKey,
+    apiSecret,
+    folder: env.CLOUDINARY_FOLDER.replace(/^\/+|\/+$/g, ""),
+  } as const;
+}
+
+export const cloudinaryConfig = loadCloudinary();

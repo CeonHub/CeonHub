@@ -238,8 +238,21 @@ dependency.
 ## 6. Storage
 
 `services/storage/` defines a `StorageService` interface (`save`, `delete`, `urlFor`) and
-ships one driver, `LocalStorageService`, which writes to `STORAGE_LOCAL_DIR` and serves
-files from `/uploads`. Business logic depends only on the interface.
+ships two drivers. Business logic depends only on the interface.
+
+| `STORAGE_DRIVER` | Driver | Files live | Use for |
+| --- | --- | --- | --- |
+| `local` | `LocalStorageService` | `STORAGE_LOCAL_DIR`, served from `/uploads` | Development |
+| `cloudinary` | `CloudinaryStorageService` | Cloudinary | Production |
+
+**Cloudinary.** Set `STORAGE_DRIVER=cloudinary` and `CLOUDINARY_URL` (or the three
+`CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET` fields). Uploads go to
+`<CLOUDINARY_FOLDER>/resumes/<uuid>-<name>.<ext>` as `raw` resources — raw stores the
+bytes untouched, skips image processing, and sidesteps the account-level "PDF and ZIP
+files delivery" setting that blocks PDFs delivered as images. The database keeps only the
+URL and the public id (`Resume.url`, `Resume.storageKey`); no file bytes are ever stored
+in Postgres, which is what lets the API run on a free database and an ephemeral
+filesystem. Missing credentials fail at startup, not at the first upload.
 
 **Adding an S3-compatible driver** (S3, Cloudflare R2, Supabase Storage, …):
 
