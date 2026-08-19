@@ -12,8 +12,8 @@ COPY . .
 
 # NEXT_PUBLIC_* values are inlined into the browser bundle at build time, so they
 # must be supplied as build arguments rather than at container start.
-ARG NEXT_PUBLIC_API_URL=http://localhost:4000
-ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ARG NEXT_PUBLIC_API_URL=https://ceonhub-api.onrender.com
+ARG NEXT_PUBLIC_SITE_URL=https://www.ceonhub.net
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 

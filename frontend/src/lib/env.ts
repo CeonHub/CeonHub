@@ -17,12 +17,12 @@ function required(value: string | undefined, name: string, fallback: string): st
 export const API_URL = required(
   process.env.NEXT_PUBLIC_API_URL,
   "NEXT_PUBLIC_API_URL",
-  "http://localhost:4000",
+  "https://ceonhub-api.onrender.com",
 );
 
 /** Absolute URL of this site, used for SEO metadata. */
 export const SITE_URL = required(
   process.env.NEXT_PUBLIC_SITE_URL,
   "NEXT_PUBLIC_SITE_URL",
-  "http://localhost:3000",
+  "https://www.ceonhub.net",
 );
