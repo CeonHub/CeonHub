@@ -11,7 +11,7 @@ services:
     name: ceonhub-api
     runtime: node
     plan: free # 750 instance hours/month; sleeps after 15 minutes idle
-    region: oregon # pick the one nearest your users
+    region: ohio # pick the one nearest your users
     rootDir: backend
     healthCheckPath: /health
     autoDeploy: true
