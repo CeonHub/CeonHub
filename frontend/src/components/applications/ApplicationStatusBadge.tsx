@@ -4,8 +4,8 @@ import type { ApplicationStatus } from "@/lib/types";
 
 const TONES: Record<ApplicationStatus, BadgeTone> = {
   SUBMITTED: "neutral",
-  REVIEWING: "brand",
-  SHORTLISTED: "brand",
+  REVIEWING: "primary",
+  SHORTLISTED: "primary",
   INTERVIEW: "immediate",
   OFFER: "immediate",
   HIRED: "available",

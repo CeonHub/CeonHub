@@ -74,14 +74,14 @@ function CandidateJobs() {
                 aria-pressed={activeSkill === skill.slug}
                 className={
                   activeSkill === skill.slug
-                    ? "rounded-full bg-brand-600 px-3 py-1 text-sm font-medium text-white"
+                    ? "rounded-full border border-brand-edge bg-brand px-3 py-1 text-sm font-medium text-brand-fg"
                     : "rounded-full bg-ink-100 px-3 py-1 text-sm text-ink-700 hover:bg-ink-200"
                 }
               >
                 {skill.name}
               </button>
             ))}
-            {desired && <Badge tone="brand">{desired.replace("_", " ").toLowerCase()}</Badge>}
+            {desired && <Badge tone="primary">{desired.replace("_", " ").toLowerCase()}</Badge>}
           </div>
 
           {jobs.loading ? (

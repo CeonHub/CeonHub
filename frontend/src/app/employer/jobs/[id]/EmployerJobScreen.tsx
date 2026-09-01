@@ -130,7 +130,7 @@ function StatusActions({ job, onChanged }: { job: Job; onChanged: () => void }) 
         action={
           <Link
             href={`/jobs/${job.id}`}
-            className="text-sm font-medium text-brand-700 hover:underline"
+            className="text-sm font-medium text-primary-700 hover:underline"
           >
             View public page
           </Link>

@@ -36,7 +36,7 @@ export function LoginForm() {
       <AuthDivider label="new here?" />
 
       <p className="text-center text-sm text-ink-600">
-        <Link href="/register" className="font-medium text-brand-700 hover:underline">
+        <Link href="/register" className="font-medium text-primary-700 hover:underline">
           Create an account
         </Link>{" "}
         — it also takes one click.

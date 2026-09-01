@@ -89,7 +89,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
               action={
                 <Link
                   href="/candidate/invitations"
-                  className="text-sm font-medium text-brand-700 hover:underline"
+                  className="text-sm font-medium text-primary-700 hover:underline"
                 >
                   See all
                 </Link>
@@ -110,7 +110,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
                     <li key={invitation.id} className="px-5 py-4">
                       <Link
                         href="/candidate/invitations"
-                        className="font-medium text-ink-900 hover:text-brand-700"
+                        className="font-medium text-ink-900 hover:text-primary-700"
                       >
                         {invitation.job.title}
                       </Link>
@@ -138,7 +138,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
               action={
                 <Link
                   href="/candidate/applications"
-                  className="text-sm font-medium text-brand-700 hover:underline"
+                  className="text-sm font-medium text-primary-700 hover:underline"
                 >
                   See all
                 </Link>
@@ -163,7 +163,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
                       <div className="min-w-0">
                         <Link
                           href={`/jobs/${application.job.id}`}
-                          className="font-medium text-ink-900 hover:text-brand-700"
+                          className="font-medium text-ink-900 hover:text-primary-700"
                         >
                           {application.job.title}
                         </Link>
@@ -191,7 +191,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
       <section className="mt-8" aria-label="Latest jobs">
         <div className="flex items-center justify-between pb-3">
           <h2 className="text-lg font-semibold text-ink-900">Latest jobs</h2>
-          <Link href="/candidate/jobs" className="text-sm font-medium text-brand-700 hover:underline">
+          <Link href="/candidate/jobs" className="text-sm font-medium text-primary-700 hover:underline">
             Jobs for you
           </Link>
         </div>

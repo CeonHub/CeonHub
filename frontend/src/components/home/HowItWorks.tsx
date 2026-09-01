@@ -42,7 +42,7 @@ export function StepColumn({
       <ol className="mt-4 space-y-4">
         {steps.map((step, index) => (
           <li key={step.title} className="flex gap-3">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-xs font-semibold text-primary-700">
               {index + 1}
             </span>
             <div>

@@ -6,7 +6,7 @@ type AlertTone = "error" | "success" | "info";
 const TONES: Record<AlertTone, string> = {
   error: "border-danger-600/30 bg-danger-100 text-danger-700",
   success: "border-available-600/30 bg-available-100 text-available-700",
-  info: "border-brand-600/20 bg-brand-50 text-brand-800",
+  info: "border-primary-600/20 bg-primary-50 text-primary-800",
 };
 
 interface AlertProps {

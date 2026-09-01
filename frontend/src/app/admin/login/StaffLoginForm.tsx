@@ -74,7 +74,7 @@ export function StaffLoginForm() {
 
       <p className="text-center text-sm text-ink-600">
         Not staff?{" "}
-        <Link href="/login" className="font-medium text-brand-700 hover:underline">
+        <Link href="/login" className="font-medium text-primary-700 hover:underline">
           Sign in with LinkedIn
         </Link>
       </p>

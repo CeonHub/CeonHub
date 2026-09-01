@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SITE_URL } from "@/lib/env";
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   },
   description:
     "CeonHub is a hiring and work marketplace for immediate hiring, freelance and side income work, internships, and private employer–candidate connections.",
+  applicationName: "CeonHub",
   openGraph: {
     type: "website",
     siteName: "CeonHub",
@@ -27,6 +28,11 @@ export const metadata: Metadata = {
     description:
       "Immediate hiring, freelance and side-income work, internships, and private opportunities.",
   },
+};
+
+/** Matches the green in the mark, so mobile browser chrome picks up the brand. */
+export const viewport: Viewport = {
+  themeColor: "#23e837",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

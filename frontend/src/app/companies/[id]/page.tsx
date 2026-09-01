@@ -68,7 +68,7 @@ export default async function CompanyPage({ params }: PageProps) {
               href={company.website}
               target="_blank"
               rel="noreferrer nofollow"
-              className="mt-2 inline-block text-sm font-medium text-brand-700 hover:underline"
+              className="mt-2 inline-block text-sm font-medium text-primary-700 hover:underline"
             >
               {company.website.replace(/^https?:\/\//, "")}
             </a>

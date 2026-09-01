@@ -50,13 +50,13 @@ export function SkillsInput({
         {value.map((skill) => (
           <span
             key={skill}
-            className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1 text-sm text-brand-800 ring-1 ring-inset ring-brand-200"
+            className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-2.5 py-1 text-sm text-primary-800 ring-1 ring-inset ring-primary-200"
           >
             {skill}
             <button
               type="button"
               onClick={() => onChange(value.filter((entry) => entry !== skill))}
-              className="text-brand-700 hover:text-brand-900"
+              className="text-primary-700 hover:text-primary-900"
               aria-label={`Remove ${skill}`}
             >
               ×

@@ -94,7 +94,7 @@ export default async function HomePage() {
           <Container>
             <div className="flex items-end justify-between">
               <h2 className="text-2xl font-semibold text-ink-900">Companies hiring now</h2>
-              <Link href="/companies" className="text-sm font-medium text-brand-700 hover:underline">
+              <Link href="/companies" className="text-sm font-medium text-primary-700 hover:underline">
                 All companies
               </Link>
             </div>
@@ -103,7 +103,7 @@ export default async function HomePage() {
                 <li key={company.id}>
                   <Link
                     href={`/companies/${company.slug}`}
-                    className="flex items-center gap-3 rounded-card border border-ink-200 bg-white p-4 transition-colors hover:border-brand-300"
+                    className="flex items-center gap-3 rounded-card border border-ink-200 bg-white p-4 transition-colors hover:border-primary-300"
                   >
                     <CompanyLogo name={company.name} logoUrl={company.logoUrl ?? null} />
                     <span className="min-w-0">

@@ -21,12 +21,14 @@ export function StatCard({ label, value, hint, href }: StatCardProps) {
     return (
       <Link
         href={href}
-        className="block rounded-card border border-ink-200 bg-white p-5 transition-colors hover:border-brand-300"
+        className="block rounded-card border border-ink-200 bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary-400 hover:shadow-lift"
       >
         {content}
       </Link>
     );
   }
 
-  return <div className="rounded-card border border-ink-200 bg-white p-5">{content}</div>;
+  return (
+    <div className="rounded-card border border-ink-200 bg-white p-5 shadow-card">{content}</div>
+  );
 }

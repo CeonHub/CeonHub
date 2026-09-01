@@ -87,7 +87,7 @@ function EmployerDashboard({ user }: { user: SessionUser }) {
           <CardHeader
             title="Active jobs"
             action={
-              <Link href="/employer/jobs" className="text-sm font-medium text-brand-700 hover:underline">
+              <Link href="/employer/jobs" className="text-sm font-medium text-primary-700 hover:underline">
                 Manage jobs
               </Link>
             }
@@ -108,7 +108,7 @@ function EmployerDashboard({ user }: { user: SessionUser }) {
                     <div className="min-w-0">
                       <Link
                         href={`/employer/jobs/${job.id}`}
-                        className="font-medium text-ink-900 hover:text-brand-700"
+                        className="font-medium text-ink-900 hover:text-primary-700"
                       >
                         {job.title}
                       </Link>
@@ -138,7 +138,7 @@ function EmployerDashboard({ user }: { user: SessionUser }) {
             action={
               <Link
                 href="/employer/applications"
-                className="text-sm font-medium text-brand-700 hover:underline"
+                className="text-sm font-medium text-primary-700 hover:underline"
               >
                 See all
               </Link>
@@ -192,7 +192,7 @@ function EmployerDashboard({ user }: { user: SessionUser }) {
             action={
               <Link
                 href="/employer/invitations"
-                className="text-sm font-medium text-brand-700 hover:underline"
+                className="text-sm font-medium text-primary-700 hover:underline"
               >
                 See all
               </Link>

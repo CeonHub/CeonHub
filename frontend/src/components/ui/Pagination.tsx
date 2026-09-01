@@ -83,7 +83,7 @@ function PageControl({
   const className = cn(
     ITEM,
     current
-      ? "border-brand-600 bg-brand-600 text-white"
+      ? "border-brand-edge bg-brand text-brand-fg"
       : "border-ink-200 bg-white text-ink-700 hover:bg-ink-50",
     disabled && "pointer-events-none opacity-40",
   );

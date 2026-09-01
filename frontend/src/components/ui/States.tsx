@@ -16,7 +16,7 @@ export function LoadingState({ label = "Loading…", className }: { label?: stri
       )}
       role="status"
     >
-      <Spinner className="h-5 w-5 text-brand-600" />
+      <Spinner className="h-5 w-5 text-primary-600" />
       {label}
     </div>
   );

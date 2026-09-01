@@ -69,7 +69,7 @@ export function ResumeUpload({ currentUrl, onUploaded }: ResumeUploadProps) {
               href={currentUrl}
               target="_blank"
               rel="noreferrer"
-              className="font-medium text-brand-700 hover:underline"
+              className="font-medium text-primary-700 hover:underline"
             >
               view file
             </a>

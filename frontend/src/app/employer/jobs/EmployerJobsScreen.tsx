@@ -62,7 +62,7 @@ function EmployerJobs() {
             }}
             className={
               status === tab.value
-                ? "rounded-md bg-brand-600 px-3 py-1.5 text-sm font-medium text-white"
+                ? "rounded-md border border-brand-edge bg-brand px-3 py-1.5 text-sm font-medium text-brand-fg"
                 : "rounded-md px-3 py-1.5 text-sm font-medium text-ink-600 hover:bg-ink-100"
             }
           >
@@ -84,7 +84,7 @@ function EmployerJobs() {
                   <div className="min-w-0 flex-1">
                     <Link
                       href={`/employer/jobs/${job.id}`}
-                      className="font-medium text-ink-900 hover:text-brand-700"
+                      className="font-medium text-ink-900 hover:text-primary-700"
                     >
                       {job.title}
                     </Link>
@@ -98,7 +98,7 @@ function EmployerJobs() {
 
                   <Link
                     href={`/employer/applications?jobId=${job.id}`}
-                    className="text-sm font-medium text-brand-700 hover:underline"
+                    className="text-sm font-medium text-primary-700 hover:underline"
                   >
                     {job.applicationCount ?? 0} applicant
                     {(job.applicationCount ?? 0) === 1 ? "" : "s"}

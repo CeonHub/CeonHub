@@ -78,7 +78,7 @@ function EmployerInvitations() {
                     <p className="text-sm text-ink-500">
                       <Link
                         href={`/employer/jobs/${invitation.job.id}`}
-                        className="text-brand-700 hover:underline"
+                        className="text-primary-700 hover:underline"
                       >
                         {invitation.job.title}
                       </Link>

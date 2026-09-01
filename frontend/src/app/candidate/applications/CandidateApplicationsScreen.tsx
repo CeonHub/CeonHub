@@ -102,7 +102,7 @@ function ApplicationRow({
       <div className="min-w-0">
         <Link
           href={`/jobs/${application.job.id}`}
-          className="font-medium text-ink-900 hover:text-brand-700"
+          className="font-medium text-ink-900 hover:text-primary-700"
         >
           {application.job.title}
         </Link>

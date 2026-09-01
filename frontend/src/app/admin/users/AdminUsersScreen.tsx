@@ -165,7 +165,7 @@ function UserRow({
       </div>
 
       <div className="flex items-center gap-3">
-        <Badge tone={user.role === "ADMIN" ? "brand" : "neutral"}>{user.role.toLowerCase()}</Badge>
+        <Badge tone={user.role === "ADMIN" ? "primary" : "neutral"}>{user.role.toLowerCase()}</Badge>
         <Badge tone={user.status === "ACTIVE" ? "available" : "danger"}>
           {user.status.toLowerCase()}
         </Badge>

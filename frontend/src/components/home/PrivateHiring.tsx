@@ -19,10 +19,10 @@ const STEPS = [
 /** The differentiator, explained concretely rather than as a slogan. */
 export function PrivateHiring() {
   return (
-    <section className="border-y border-ink-200 bg-ink-900 py-16 text-white" aria-label="Private hiring">
+    <section className="relative border-y border-ink-200 bg-ink-950 py-16 text-white" aria-label="Private hiring">
       <Container className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
         <div>
-          <p className="text-sm font-semibold tracking-wide text-brand-200 uppercase">
+          <p className="text-sm font-semibold tracking-wide text-primary-200 uppercase">
             Private opportunities
           </p>
           <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">
@@ -35,11 +35,7 @@ export function PrivateHiring() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <ButtonLink href="/register?role=EMPLOYER">Start hiring privately</ButtonLink>
-            <ButtonLink
-              href="/how-it-works"
-              variant="secondary"
-              className="border-ink-700 bg-transparent text-white hover:bg-ink-800"
-            >
+            <ButtonLink href="/how-it-works" variant="inverse">
               How it works
             </ButtonLink>
           </div>
@@ -47,8 +43,8 @@ export function PrivateHiring() {
 
         <ol className="space-y-4">
           {STEPS.map((step, index) => (
-            <li key={step.title} className="flex gap-4 rounded-card bg-ink-800 p-5">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold">
+            <li key={step.title} className="flex gap-4 rounded-card bg-ink-900 p-5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-edge bg-brand text-sm font-semibold text-brand-fg">
                 {index + 1}
               </span>
               <div>

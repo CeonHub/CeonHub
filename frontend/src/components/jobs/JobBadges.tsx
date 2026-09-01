@@ -10,7 +10,7 @@ export function JobBadges({ job }: { job: JobSummary }) {
   return (
     <div className="flex flex-wrap gap-1.5">
       {job.immediateHire && <Badge tone="immediate">Immediate start</Badge>}
-      {job.private && <Badge tone="brand">Private</Badge>}
+      {job.private && <Badge tone="primary">Private</Badge>}
       <Badge>{EMPLOYMENT_TYPE_LABELS[job.employmentType]}</Badge>
       {job.remote && <Badge>Remote</Badge>}
       {job.freelance && <Badge>Freelance</Badge>}

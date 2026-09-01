@@ -141,7 +141,7 @@ function JobRow({ job, onChanged }: { job: AdminJobRow; onChanged: () => void })
     <li className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
       <div className="min-w-0">
         <p className="font-medium text-ink-900">
-          <Link href={`/jobs/${job.id}`} className="hover:text-brand-700">
+          <Link href={`/jobs/${job.id}`} className="hover:text-primary-700">
             {job.title}
           </Link>
         </p>
@@ -153,7 +153,7 @@ function JobRow({ job, onChanged }: { job: AdminJobRow; onChanged: () => void })
       </div>
 
       <div className="flex items-center gap-3">
-        {job.private && <Badge tone="brand">Private</Badge>}
+        {job.private && <Badge tone="primary">Private</Badge>}
         <JobStatusBadge status={job.status} />
 
         {job.status === "HIDDEN" ? (

@@ -95,7 +95,7 @@ function InvitationCard({
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <h2 className="font-semibold text-ink-900">
-              <Link href={`/jobs/${invitation.job.id}`} className="hover:text-brand-700">
+              <Link href={`/jobs/${invitation.job.id}`} className="hover:text-primary-700">
                 {invitation.job.title}
               </Link>
             </h2>
@@ -110,7 +110,7 @@ function InvitationCard({
         </div>
 
         {invitation.message && (
-          <blockquote className="mt-4 border-l-2 border-brand-200 pl-3 text-sm text-ink-700">
+          <blockquote className="mt-4 border-l-2 border-primary-200 pl-3 text-sm text-ink-700">
             {invitation.message}
           </blockquote>
         )}

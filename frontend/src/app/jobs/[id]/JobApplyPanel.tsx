@@ -137,7 +137,7 @@ function ApplyForm({ jobId }: { jobId: string }) {
           </p>
           <Link
             href="/candidate/applications"
-            className="mt-3 inline-block text-sm font-medium text-brand-700 hover:underline"
+            className="mt-3 inline-block text-sm font-medium text-primary-700 hover:underline"
           >
             Track your applications
           </Link>

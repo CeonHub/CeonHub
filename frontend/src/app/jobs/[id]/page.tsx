@@ -59,7 +59,7 @@ export default async function JobDetailPage({ params }: PageProps) {
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
         <article>
           <nav aria-label="Breadcrumb" className="pb-4 text-sm text-ink-500">
-            <Link href="/jobs" className="hover:text-brand-700">
+            <Link href="/jobs" className="hover:text-primary-700">
               Jobs
             </Link>
             <span aria-hidden="true"> / </span>
@@ -71,7 +71,7 @@ export default async function JobDetailPage({ params }: PageProps) {
             <p className="mt-2 text-ink-600">
               <Link
                 href={`/companies/${job.company.slug}`}
-                className="font-medium text-brand-700 hover:underline"
+                className="font-medium text-primary-700 hover:underline"
               >
                 {job.company.name}
               </Link>
@@ -96,7 +96,7 @@ export default async function JobDetailPage({ params }: PageProps) {
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {job.skills.map((skill) => (
                   <li key={skill.id}>
-                    <Badge tone="brand">{skill.name}</Badge>
+                    <Badge tone="primary">{skill.name}</Badge>
                   </li>
                 ))}
               </ul>
@@ -129,7 +129,7 @@ export default async function JobDetailPage({ params }: PageProps) {
               {job.company.location && <p className="mt-1">{job.company.location}</p>}
               <Link
                 href={`/companies/${job.company.slug}`}
-                className="mt-3 inline-block font-medium text-brand-700 hover:underline"
+                className="mt-3 inline-block font-medium text-primary-700 hover:underline"
               >
                 View company profile
               </Link>

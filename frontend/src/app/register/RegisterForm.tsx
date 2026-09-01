@@ -58,7 +58,7 @@ export function RegisterForm() {
               className={cn(
                 "flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors",
                 role === choice.value
-                  ? "border-brand-600 bg-brand-50"
+                  ? "border-primary-600 bg-primary-50"
                   : "border-ink-200 bg-white hover:bg-ink-50",
               )}
             >
@@ -99,7 +99,7 @@ export function RegisterForm() {
       <AuthDivider label="already a member?" />
 
       <p className="text-center text-sm text-ink-600">
-        <Link href="/login" className="font-medium text-brand-700 hover:underline">
+        <Link href="/login" className="font-medium text-primary-700 hover:underline">
           Sign in instead
         </Link>
       </p>

@@ -10,6 +10,7 @@
     "postinstall": "node scripts/run.mjs install",
     "setup": "node scripts/run.mjs install",
     "dev": "node scripts/run.mjs dev",
+    "brand:assets": "node scripts/brand-assets.mjs",
     "build": "node scripts/run.mjs build",
     "start": "node scripts/run.mjs start",
     "test": "node scripts/run.mjs test",

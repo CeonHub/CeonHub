@@ -54,7 +54,7 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/90 backdrop-blur">
       <Container className="flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-8">
           <Logo />
@@ -146,6 +146,8 @@ export function Navbar() {
           </Container>
         </div>
       )}
+
+      <div aria-hidden="true" className="brand-gradient h-0.5 w-full" />
     </header>
   );
 }
@@ -165,7 +167,9 @@ function NavLink({
       aria-current={active ? "page" : undefined}
       className={cn(
         "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-        active ? "bg-brand-50 text-brand-800" : "text-ink-600 hover:bg-ink-100 hover:text-ink-900",
+        active
+          ? "bg-primary-50 text-primary-800"
+          : "text-ink-600 hover:bg-ink-100 hover:text-ink-900",
       )}
     >
       {children}

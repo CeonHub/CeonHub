@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export type BadgeTone = "neutral" | "brand" | "available" | "immediate" | "danger";
+export type BadgeTone = "neutral" | "primary" | "available" | "immediate" | "danger";
 
 const TONES: Record<BadgeTone, string> = {
   neutral: "bg-ink-100 text-ink-700 ring-ink-200",
-  brand: "bg-brand-50 text-brand-800 ring-brand-200",
+  primary: "bg-primary-50 text-primary-800 ring-primary-200",
   available: "bg-available-100 text-available-700 ring-available-600/20",
   immediate: "bg-immediate-100 text-immediate-700 ring-immediate-600/20",
   danger: "bg-danger-100 text-danger-700 ring-danger-600/20",

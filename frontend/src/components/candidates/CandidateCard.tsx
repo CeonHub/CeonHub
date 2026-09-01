@@ -37,7 +37,7 @@ export function CandidateCard({
         <ul className="mt-3 flex flex-wrap gap-1.5">
           {candidate.skills.slice(0, 8).map((skill) => (
             <li key={skill.id}>
-              <Badge tone="brand">{skill.name}</Badge>
+              <Badge tone="primary">{skill.name}</Badge>
             </li>
           ))}
         </ul>

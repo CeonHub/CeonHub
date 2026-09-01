@@ -25,8 +25,9 @@ Express API) sharing one PostgreSQL database through Prisma.
 11. [Production build](#production-build)
 12. [Deployment](#deployment)
 13. [Docker](#docker)
-14. [Project layout](#project-layout)
-15. [Troubleshooting](#troubleshooting)
+14. [Brand and theming](#brand-and-theming)
+15. [Project layout](#project-layout)
+16. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -426,6 +427,53 @@ docker compose run --rm backend npm run db:seed:prod   # optional demo data
 
 ---
 
+## Brand and theming
+
+The palette is derived from the logo — a vivid green (`#23e837`) and a vivid orange
+(`#ff9100`). Everything lives in [frontend/src/app/globals.css](frontend/src/app/globals.css).
+
+**Two fixed ramps, two swappable roles.** `green-*` and `orange-*` are generated in OKLCH
+so every step sits at a known contrast ratio against white (`600` ≥ 4.5:1 for white text on
+a fill, `700` ≥ 6:1 for body text on a light surface). On top of them sit `primary-*` and
+`secondary-*` — *roles*, not colours. Components only ever reference the roles.
+
+**The accent choice.** Which hue fills which role is up to the reader: green primary with
+orange support, or the reverse. The choice sets `data-accent` on `<html>`, which reassigns
+the role variables — so the whole interface flips with one attribute and no second set of
+class names. It is offered in the header, in the footer, and under *Settings → Appearance*,
+and persists per device in `localStorage`. A small script in `<head>`
+([src/lib/accent.ts](frontend/src/lib/accent.ts)) applies the saved choice before the first
+paint, so there is no flash of the wrong colour.
+
+```
+bg-primary-600     follows the reader's choice
+bg-brand           the vivid logo ink itself, for filled buttons
+text-brand-fg      the near-black type that belongs on that fill
+bg-available-100   pinned to green — meaning, so it never moves
+bg-immediate-100   pinned to orange — likewise
+```
+
+Neither logo ink carries white text, so filled brand buttons use `bg-brand text-brand-fg`:
+the untouched ink with near-black type on top, which clears 9:1. `available-*` and
+`immediate-*` stay pinned to green and orange because they carry marketplace meaning
+(*available now*, *immediate start*) that must not change when the accent flips.
+
+**Assets.** The supplied brand kit in [logo/](logo/) is the source art, in three families
+— `Horizontal` (mark and wordmark side by side, ~3.8:1), `Small` (the bare CH mark) and
+`Large` (the mark with the wordmark set across it). Each ships at several sizes; the build
+reads only the largest of each and resamples everything from it, so all output stays on one
+master. The `Circle` and `Square` icon variants differ only in safe-area padding, and
+`Square` is the one taken — slots that want a circle or rounded rect apply their own mask.
+
+`npm run brand:assets` regenerates every derivative: trimmed, transparent versions into
+[frontend/public/](frontend/public/), and the favicon, Apple touch icon and social card into
+`frontend/src/app/` as Next.js file conventions (`icon.png`, `apple-icon.png`,
+`opengraph-image.png`, `twitter-image.png`). The kit is exported on opaque white, so the
+shared step is un-matting it back to an alpha channel — without that the logo is a white box
+in dark mode.
+
+---
+
 ## Project layout
 
 ```
@@ -447,8 +495,12 @@ backend/
 frontend/
   src/app/                  routes (public, candidate, employer, admin)
   src/components/           layout · ui · jobs · applications · invitations · …
+  src/app/globals.css       design tokens — brand ramps and the accent roles
+  src/app/icon.png          favicon, apple-icon, opengraph-image, twitter-image
+  src/components/layout/    Navbar · Footer · Logo · AccentPicker
   src/lib/                  API client, shared types, formatting helpers
-  src/providers/            AuthProvider
+  src/providers/            AuthProvider · ThemeProvider (accent choice)
+  public/                   logo.png · long-logo.png · logo-mark.png
 ```
 
 ---

@@ -27,9 +27,9 @@ export function WorkTypes({ types }: { types: WorkType[] }) {
             <Link
               key={type.href}
               href={type.href}
-              className="rounded-card border border-ink-200 bg-white p-5 transition-colors hover:border-brand-300"
+              className="rounded-card border border-ink-200 bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary-400 hover:shadow-lift"
             >
-              <p className="text-sm font-semibold text-brand-700">
+              <p className="text-sm font-semibold text-primary-700">
                 {type.count === null ? "—" : type.count} open
               </p>
               <h3 className="mt-1 font-semibold text-ink-900">{type.title}</h3>

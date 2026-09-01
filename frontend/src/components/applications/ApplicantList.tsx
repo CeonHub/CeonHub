@@ -97,7 +97,7 @@ function ApplicantRow({
                 <span className="text-ink-400"> — </span>
                 <Link
                   href={`/jobs/${application.job.id}`}
-                  className="font-normal text-brand-700 hover:underline"
+                  className="font-normal text-primary-700 hover:underline"
                 >
                   {application.job.title}
                 </Link>
@@ -122,7 +122,7 @@ function ApplicantRow({
 
           {application.coverLetter && (
             <details className="mt-2">
-              <summary className="cursor-pointer text-sm font-medium text-brand-700">
+              <summary className="cursor-pointer text-sm font-medium text-primary-700">
                 Read message
               </summary>
               <p className="mt-1 whitespace-pre-line text-sm text-ink-700">
@@ -137,7 +137,7 @@ function ApplicantRow({
                 href={candidate.resumeUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="font-medium text-brand-700 hover:underline"
+                className="font-medium text-primary-700 hover:underline"
               >
                 View resume
               </a>
@@ -145,7 +145,7 @@ function ApplicantRow({
             {candidate?.email && (
               <a
                 href={`mailto:${candidate.email}`}
-                className="font-medium text-brand-700 hover:underline"
+                className="font-medium text-primary-700 hover:underline"
               >
                 {candidate.email}
               </a>

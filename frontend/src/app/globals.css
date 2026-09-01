@@ -3,53 +3,236 @@
 /**
  * CeonHub design tokens.
  *
- * One restrained palette: a deep "ink" neutral for text and structure, a serious
- * blue for actions, and three semantic colours (available / immediate / danger)
- * that carry meaning in the marketplace rather than decoration.
+ * The palette is derived from the logo: a vivid green (#23e837) and a vivid
+ * orange (#ff9100). Those two hues are kept as fixed ramps (green-*, orange-*),
+ * generated in OKLCH so every step lands on a known contrast ratio against
+ * white — 600 clears 4.5:1 for white text on a filled button, 700 clears 6:1
+ * for body-size text on a light surface.
+ *
+ * On top of the fixed ramps sit two roles: primary-* and secondary-*. Green
+ * leads, orange supports, and the assignment is fixed. Components reference the
+ * roles rather than the hues directly, so the two stay separable — swapping them
+ * is a change to this file alone, not to every component.
+ *
+ * available-* and immediate-* stay pinned to green and orange respectively:
+ * they carry marketplace meaning, so they must not move when the accent flips.
  *
  * No web fonts are loaded: the system stack renders instantly and removes a
  * build-time network dependency.
  */
+
+:root {
+  /* Fixed brand ramps */
+  --green-50: #f4fef3;
+  --green-100: #d9fdd7;
+  --green-200: #8cfd8b;
+  --green-300: #28ef3b;
+  --green-400: #0bd229;
+  --green-500: #00ad1d;
+  --green-600: #008814;
+  --green-700: #027311;
+  --green-800: #0d5b13;
+  --green-900: #104713;
+  --green-950: #0c2a0c;
+
+  /* Hue rotates toward red as the steps darken: taking a yellow-orange straight
+     down in lightness lands on mud, so the deep steps stay a burnt orange. */
+  --orange-50: #fefbf8;
+  --orange-100: #fef2e8;
+  --orange-200: #fddec7;
+  --orange-300: #fdc49a;
+  --orange-400: #fe9e58;
+  --orange-500: #ed7200;
+  --orange-600: #c35400;
+  --orange-700: #a84201;
+  --orange-800: #88340c;
+  --orange-900: #6b280f;
+  --orange-950: #40180b;
+
+  /* The untouched logo inks. Neither carries white text, so they are never used
+     *as* text on white — but as a filled surface with near-black type on top,
+     both clear 9:1 and are the most on-brand thing in the palette. */
+  --logo-green: #23e837;
+  --logo-orange: #ff9100;
+
+  --green-fill: var(--logo-green);
+  --green-fill-fg: var(--green-950);
+  --orange-fill: var(--logo-orange);
+  --orange-fill-fg: var(--orange-950);
+
+  /* Neutrals and danger */
+  --ink-50: #fbfbfb;
+  --ink-100: #f3f4f5;
+  --ink-200: #e3e5e7;
+  --ink-300: #cdd0d4;
+  --ink-400: #b1b6bd;
+  --ink-500: #8e96a0;
+  --ink-600: #6e7682;
+  --ink-700: #5c626d;
+  --ink-800: #494e56;
+  --ink-900: #393e43;
+  --ink-950: #222428;
+
+  --danger-50: #fefbfa;
+  --danger-100: #fcf2f0;
+  --danger-200: #f9deda;
+  --danger-300: #f6c5bc;
+  --danger-400: #f39f92;
+  --danger-500: #ef6c5b;
+  --danger-600: #d83b2c;
+  --danger-700: #b53124;
+  --danger-800: #902a20;
+  --danger-900: #70241b;
+  --danger-950: #421611;
+
+  /* Role assignment: green leads, orange supports */
+  --primary-50: var(--green-50);
+  --primary-100: var(--green-100);
+  --primary-200: var(--green-200);
+  --primary-300: var(--green-300);
+  --primary-400: var(--green-400);
+  --primary-500: var(--green-500);
+  --primary-600: var(--green-600);
+  --primary-700: var(--green-700);
+  --primary-800: var(--green-800);
+  --primary-900: var(--green-900);
+  --primary-950: var(--green-950);
+  --primary-logo: var(--logo-green);
+
+  --secondary-50: var(--orange-50);
+  --secondary-100: var(--orange-100);
+  --secondary-200: var(--orange-200);
+  --secondary-300: var(--orange-300);
+  --secondary-400: var(--orange-400);
+  --secondary-500: var(--orange-500);
+  --secondary-600: var(--orange-600);
+  --secondary-700: var(--orange-700);
+  --secondary-800: var(--orange-800);
+  --secondary-900: var(--orange-900);
+  --secondary-950: var(--orange-950);
+  --secondary-logo: var(--logo-orange);
+
+  --brand-fill: var(--green-fill);
+  --brand-fill-fg: var(--green-fill-fg);
+  --accent-fill: var(--orange-fill);
+  --accent-fill-fg: var(--orange-fill-fg);
+}
+
+/**
+ * Hover, press and edge are all mixed from the ink filling the role, so the
+ * relationship between them is stated once rather than hand-picked per hue.
+ *
+ * `edge` is darker than `active` on purpose: the logo inks are light enough that
+ * a filled button has no visible boundary against a white page, and the outline
+ * has to stay darker than the fill through every state to read as one.
+ */
+:root {
+  --brand-fill-hover: color-mix(in oklab, var(--brand-fill), #000 14%);
+  --brand-fill-active: color-mix(in oklab, var(--brand-fill), #000 26%);
+  --accent-fill-hover: color-mix(in oklab, var(--accent-fill), #000 14%);
+  --accent-fill-active: color-mix(in oklab, var(--accent-fill), #000 26%);
+  --brand-fill-edge: color-mix(in oklab, var(--brand-fill), #000 28%);
+  --accent-fill-edge: color-mix(in oklab, var(--accent-fill), #000 28%);
+}
+
+/**
+ * `inline` matters here: it makes utilities emit the raw var(--primary-600)
+ * rather than a second, frozen var(--color-primary-600) indirection, so the role
+ * assignment above stays the single place the hues are bound.
+ */
+@theme inline {
+  --color-ink-50: var(--ink-50);
+  --color-ink-100: var(--ink-100);
+  --color-ink-200: var(--ink-200);
+  --color-ink-300: var(--ink-300);
+  --color-ink-400: var(--ink-400);
+  --color-ink-500: var(--ink-500);
+  --color-ink-600: var(--ink-600);
+  --color-ink-700: var(--ink-700);
+  --color-ink-800: var(--ink-800);
+  --color-ink-900: var(--ink-900);
+  --color-ink-950: var(--ink-950);
+
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-primary-950: var(--primary-950);
+  --color-primary-logo: var(--primary-logo);
+
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+  --color-secondary-950: var(--secondary-950);
+  --color-secondary-logo: var(--secondary-logo);
+
+  /* Meaning, not decoration — these stay put when the accent flips. */
+  --color-available-50: var(--green-50);
+  --color-available-100: var(--green-100);
+  --color-available-600: var(--green-600);
+  --color-available-700: var(--green-700);
+  --color-available-800: var(--green-800);
+
+  --color-immediate-50: var(--orange-50);
+  --color-immediate-100: var(--orange-100);
+  --color-immediate-600: var(--orange-600);
+  --color-immediate-700: var(--orange-700);
+  --color-immediate-800: var(--orange-800);
+
+  --color-danger-50: var(--danger-50);
+  --color-danger-100: var(--danger-100);
+  --color-danger-200: var(--danger-200);
+  --color-danger-300: var(--danger-300);
+  --color-danger-400: var(--danger-400);
+  --color-danger-500: var(--danger-500);
+  --color-danger-600: var(--danger-600);
+  --color-danger-700: var(--danger-700);
+  --color-danger-800: var(--danger-800);
+  --color-danger-900: var(--danger-900);
+  --color-danger-950: var(--danger-950);
+
+  --color-logo-green: var(--logo-green);
+  --color-logo-orange: var(--logo-orange);
+
+  /* Filled brand surfaces: the vivid logo ink, with the near-black type that
+     belongs on it. `brand` follows primary, `accent` follows secondary. */
+  --color-brand: var(--brand-fill);
+  --color-brand-hover: var(--brand-fill-hover);
+  --color-brand-active: var(--brand-fill-active);
+  --color-brand-fg: var(--brand-fill-fg);
+  --color-brand-edge: var(--brand-fill-edge);
+
+  --color-accent: var(--accent-fill);
+  --color-accent-hover: var(--accent-fill-hover);
+  --color-accent-active: var(--accent-fill-active);
+  --color-accent-fg: var(--accent-fill-fg);
+  --color-accent-edge: var(--accent-fill-edge);
+}
+
 @theme {
-  --color-ink-950: #080d16;
-  --color-ink-900: #0e1726;
-  --color-ink-800: #1b2637;
-  --color-ink-700: #2c3a4f;
-  --color-ink-600: #48566b;
-  --color-ink-500: #64748b;
-  --color-ink-400: #94a3b8;
-  --color-ink-300: #c3ccd8;
-  --color-ink-200: #e1e6ee;
-  --color-ink-100: #eef1f6;
-  --color-ink-50: #f7f9fc;
-
-  --color-brand-900: #0f2668;
-  --color-brand-800: #143286;
-  --color-brand-700: #17399a;
-  --color-brand-600: #1e4bc4;
-  --color-brand-500: #2b5fe3;
-  --color-brand-200: #c3d4fb;
-  --color-brand-100: #dfe8fe;
-  --color-brand-50: #eff4ff;
-
-  --color-available-700: #05593f;
-  --color-available-600: #067a55;
-  --color-available-100: #d6f5e9;
-
-  --color-immediate-700: #8a3c07;
-  --color-immediate-600: #b45309;
-  --color-immediate-100: #fdeecf;
-
-  --color-danger-700: #8f1d18;
-  --color-danger-600: #b42318;
-  --color-danger-100: #fde4e2;
-
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
     "Noto Sans", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  --radius-card: 0.625rem;
+  --radius-card: 0.75rem;
+
+  /* Soft, low-contrast elevation — the palette is loud enough already. */
+  --shadow-card: 0 1px 2px 0 rgb(34 36 40 / 0.04), 0 1px 3px 0 rgb(34 36 40 / 0.06);
+  --shadow-lift: 0 4px 12px -2px rgb(34 36 40 / 0.08), 0 2px 6px -2px rgb(34 36 40 / 0.05);
 }
 
 @layer base {
@@ -58,16 +241,28 @@
   }
 
   body {
-    background-color: var(--color-ink-50);
-    color: var(--color-ink-900);
+    background-color: var(--ink-50);
+    color: var(--ink-900);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
   /* One visible focus style everywhere, including keyboard navigation. */
   :focus-visible {
-    outline: 2px solid var(--color-brand-600);
+    outline: 2px solid var(--primary-600);
     outline-offset: 2px;
+  }
+
+  /* Radios, checkboxes and range thumbs are drawn by the browser; this is the
+     only hook for getting them off the default system blue. */
+  input,
+  progress {
+    accent-color: var(--primary-600);
+  }
+
+  ::selection {
+    background-color: var(--primary-200);
+    color: var(--primary-950);
   }
 
   h1,
@@ -75,5 +270,14 @@
   h3 {
     letter-spacing: -0.015em;
     text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  /* The logo gradient, for hero rules and decorative accents. It always runs
+     primary to secondary, so it reverses with the chosen accent. Decorative
+     only — the midpoint of these two hues is muddy, so never put type on it. */
+  .brand-gradient {
+    background-image: linear-gradient(to right, var(--primary-logo), var(--secondary-logo));
   }
 }

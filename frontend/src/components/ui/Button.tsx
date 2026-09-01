@@ -3,7 +3,12 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { cn } from "@/lib/cn";
 import { Spinner } from "./Spinner";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+/**
+ * `secondary` describes the button's rank, not its colour — it is the quiet,
+ * outlined action. `accent` is the one that paints itself in the supporting
+ * brand hue (`secondary-*`), for the second call to action in a pair.
+ */
+export type ButtonVariant = "primary" | "accent" | "secondary" | "inverse" | "ghost" | "danger";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
@@ -11,10 +16,16 @@ const BASE =
   "disabled:cursor-not-allowed disabled:opacity-60";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-brand-600 text-white hover:bg-brand-700",
-  secondary: "border border-ink-200 bg-white text-ink-800 hover:bg-ink-50",
+  primary:
+    "border border-brand-edge bg-brand text-brand-fg shadow-card hover:bg-brand-hover active:bg-brand-active",
+  accent:
+    "border border-accent-edge bg-accent text-accent-fg shadow-card hover:bg-accent-hover active:bg-accent-active",
+  secondary:
+    "border border-ink-200 bg-white text-ink-800 shadow-card hover:border-ink-300 hover:bg-ink-50",
+  inverse: "border border-white/25 bg-transparent text-white hover:bg-white/10",
   ghost: "text-ink-600 hover:bg-ink-100 hover:text-ink-900",
-  danger: "bg-danger-600 text-white hover:bg-danger-700",
+  danger:
+    "border border-danger-700 bg-danger-600 text-white shadow-card hover:bg-danger-700 active:bg-danger-800",
 };
 
 const SIZES: Record<ButtonSize, string> = {
