@@ -12,21 +12,21 @@ export const metadata: Metadata = {
     template: "%s | CeonHub",
   },
   description:
-    "CeonHub is a hiring and work marketplace for immediate hiring, freelance and side income work, internships, and private employer–candidate connections.",
+    "CeonHub is a US hiring and work marketplace for immediate hiring, freelance and side income work, internships, and private employer–candidate connections across the United States.",
   applicationName: "CeonHub",
   openGraph: {
     type: "website",
     siteName: "CeonHub",
     title: "CeonHub — Find work. Hire talent. Connect privately.",
     description:
-      "Immediate hiring, freelance and side-income work, internships, and private opportunities — with direct employer and candidate connections.",
+      "Immediate hiring, freelance and side-income work, internships, and private opportunities across the US — with direct employer and candidate connections.",
     url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
     title: "CeonHub — Find work. Hire talent. Connect privately.",
     description:
-      "Immediate hiring, freelance and side-income work, internships, and private opportunities.",
+      "Immediate hiring, freelance and side-income work, internships, and private opportunities across the US.",
   },
 };
 

@@ -47,7 +47,7 @@ export const JOB_STATUS_LABELS: Record<JobStatus, string> = {
   HIDDEN: "Hidden by admin",
 };
 
-const DATE_FORMAT = new Intl.DateTimeFormat("en-GB", {
+const DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   month: "short",
   year: "numeric",

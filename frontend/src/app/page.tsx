@@ -13,7 +13,7 @@ import type { Company, JobSummary, Paginated } from "@/lib/types";
 export const metadata: Metadata = {
   title: "CeonHub — Find work. Hire talent. Connect privately.",
   description:
-    "A hiring marketplace built for speed: immediate starts, freelance projects, side income, internships, and private opportunities you can only reach by invitation.",
+    "A US hiring marketplace built for speed: immediate starts, freelance projects, side income, internships, and private opportunities you can only reach by invitation.",
   alternates: { canonical: "/" },
 };
 

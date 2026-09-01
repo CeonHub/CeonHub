@@ -33,7 +33,8 @@ export function HomeHero({ latestJobs }: { latestJobs: JobSummary[] }) {
           </h1>
           <p className="mt-4 max-w-xl text-lg text-ink-600">
             CeonHub is built for speed: immediate starts, freelance projects, side income and
-            internships — plus private opportunities that never appear in public search.
+            internships across the US — plus private opportunities that never appear in public
+            search.
           </p>
 
           <form action="/jobs" method="get" className="mt-8 flex max-w-xl flex-col gap-2 sm:flex-row">

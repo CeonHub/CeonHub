@@ -44,8 +44,8 @@ export function Footer() {
               <Image src={longLogo} alt="" className="h-10 w-auto" sizes="177px" />
             </Link>
             <p className="mt-4 max-w-xs text-sm text-ink-600">
-              Find work, hire talent, and connect privately — a center of network for people and the
-              companies looking for them.
+              Find work, hire talent, and connect privately across the US — a center of network for
+              people and the companies looking for them.
             </p>
           </div>
 

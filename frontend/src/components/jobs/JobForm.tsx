@@ -217,7 +217,7 @@ export function JobForm({ categories, job }: JobFormProps) {
             <Field
               htmlFor="compensation"
               label="Compensation"
-              hint="Free text, e.g. “€45–55k” or “€18/hour”."
+              hint="Free text, e.g. “$95–115k” or “$22/hour”."
               error={fieldError("compensation")}
             >
               <Input
@@ -235,7 +235,7 @@ export function JobForm({ categories, job }: JobFormProps) {
                 value={values.currency}
                 error={fieldError("currency")}
                 onChange={(event) => update("currency", event.target.value)}
-                placeholder="EUR"
+                placeholder="USD"
                 maxLength={8}
               />
             </Field>

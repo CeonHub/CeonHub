@@ -229,8 +229,8 @@ or `null`).
   "employmentType": "FULL_TIME",           // FULL_TIME | PART_TIME | CONTRACT |
                                            // FREELANCE | INTERNSHIP | TEMPORARY
   "category": "Logistics & Delivery",      // from /api/jobs/meta
-  "location": "Rotterdam", "remote": false,
-  "compensation": "€2,400–2,700 / month", "currency": "EUR",
+  "location": "Columbus, OH", "remote": false,
+  "compensation": "$3,200–3,600 / month", "currency": "USD",
   "immediateHire": true, "private": false,
   "internship": false, "freelance": false, "sideIncome": false,
   "expiresAt": "2026-12-31T00:00:00.000Z", // optional, ISO 8601

@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "About CeonHub",
   description:
-    "CeonHub is a hiring and work marketplace focused on speed: immediate hiring, freelance and side income work, internships and private employer–candidate connections.",
+    "CeonHub is a US hiring and work marketplace focused on speed: immediate hiring, freelance and side income work, internships and private employer–candidate connections across the United States.",
   alternates: { canonical: "/about" },
 };
 
@@ -22,9 +22,17 @@ export default function AboutPage() {
             next quarter or next week.
           </p>
           <p>
-            CeonHub is built for the other case. It connects employers who need people quickly with
-            candidates who want work quickly — immediate starts, freelance projects, side income and
-            internships, alongside conventional full-time roles.
+            CeonHub is built for the other case. It connects US employers who need people quickly
+            with candidates who want work quickly — immediate starts, freelance projects, side
+            income and internships, alongside conventional full-time roles.
+          </p>
+
+          <h2 className="pt-4 text-xl font-semibold text-ink-900">Where we operate</h2>
+          <p>
+            CeonHub is a United States marketplace. Employers post roles based in the US,
+            candidates are looking for work in the US, and pay is quoted in US dollars. Remote
+            roles are common and welcome — they are remote <em>within</em> the US rather than open
+            worldwide, so time zones overlap and the paperwork is one country&rsquo;s.
           </p>
 
           <h2 className="pt-4 text-xl font-semibold text-ink-900">What makes it different</h2>
