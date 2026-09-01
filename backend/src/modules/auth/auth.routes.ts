@@ -6,8 +6,10 @@ import * as linkedinController from "./linkedin.controller";
 
 export const authRouter: Router = Router();
 
-// There is no password registration: candidates and employers join with LinkedIn.
-// Password sign-in remains for ADMIN accounts, which LinkedIn cannot create.
+// Candidates and employers join with LinkedIn, so there is no general password
+// registration. Staff are the exception: LinkedIn cannot create an ADMIN, so they
+// sign up and in with a password, gated on the staff email domain.
+authRouter.post("/admin/register", authRateLimit, controller.registerAdmin);
 authRouter.post("/login", authRateLimit, controller.login);
 authRouter.post("/logout", controller.logout);
 authRouter.get("/me", requireAuth, controller.me);

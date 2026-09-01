@@ -303,7 +303,7 @@ async function main(): Promise<void> {
   const passwordHash = await hashPassword(DEMO_PASSWORD);
 
   const admin = await prisma.user.create({
-    data: { email: "admin@ceonhub.example", passwordHash, role: "ADMIN" },
+    data: { email: "admin@ceonhub.net", passwordHash, role: "ADMIN" },
     select: { id: true },
   });
 
@@ -510,7 +510,7 @@ async function main(): Promise<void> {
         `${applicationPlan.length} applications · ${invitationPlan.length} invitations`,
       "",
       "  Sign in as staff:",
-      `    admin@ceonhub.example / ${DEMO_PASSWORD}   →  /admin/login`,
+      `    admin@ceonhub.net / ${DEMO_PASSWORD}       →  /admin/login`,
       "",
       "  The demo candidates and employers have no password, because CeonHub accounts",
       "  are created with LinkedIn. Their data fills the public site and the admin",

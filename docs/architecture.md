@@ -99,14 +99,37 @@ one, and the real error is logged server-side.
 * `requireRole(...)` gates routes by role. Services check *ownership* — that this employer
   owns this job, that this candidate owns this application — because a role alone is not
   authorization.
-* **Candidates and employers exist only through LinkedIn.** There is no password
+* **Candidates and employers exist only through LinkedIn.** There is no general password
   registration endpoint, and the LinkedIn flow creates only `CANDIDATE` or `EMPLOYER`
-  accounts. **Admins can never be created through the API**; they are made by the seed or
-  directly in the database, keep a password, and are the only accounts `POST /api/auth/login`
-  accepts (staff page: `/admin/login`).
+  accounts. Admins are the exception — see "Staff accounts" below — and are the only accounts
+  `POST /api/auth/login` accepts (staff page: `/admin/login`).
 * Login answers with the same message for an unknown email and a wrong password, and hashes
   a dummy password when the email is unknown so response time does not reveal which accounts
   exist.
+
+### Staff accounts
+
+`ADMIN` is the one role that both registers and signs in with a password, because LinkedIn
+cannot create one. Both steps are gated on a single email domain, `ADMIN_EMAIL_DOMAIN`
+(default `ceonhub.net`):
+
+* `POST /api/auth/admin/register` creates an `ADMIN` and signs it straight in. The role is
+  never read from the request body; reaching this endpoint is what asks for `ADMIN`, and the
+  domain is the gate.
+* `POST /api/auth/login` re-checks the domain, so an admin whose address predates the rule
+  or was moved off the domain cannot keep signing in. The check sits *after* the role check:
+  a candidate who tries their own address on the staff page is still told to use LinkedIn,
+  rather than being told what the staff domain is.
+* The domain is compared against the text after the **last `@`**, exactly. A suffix test
+  would accept `attacker@notceonhub.net`.
+* Sign-up writes a `user.admin.registered` audit row — the one privileged action with no
+  prior actor to attribute it to.
+
+**What this does not do.** Nothing in CeonHub verifies that a person can receive mail at the
+address they register, so the gate proves an address is *on* the domain and nothing more.
+Anyone who can reach the endpoint can create an admin at any name on that domain. Before
+relying on it in production, put a real check in front of it — an invite token, SSO, or
+email verification — or keep the route off the public internet.
 
 ### Sign in with LinkedIn (required)
 

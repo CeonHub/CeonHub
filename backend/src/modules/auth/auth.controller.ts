@@ -3,8 +3,17 @@ import { clearAuthCookie, setAuthCookie } from "../../config/cookies";
 import { currentUser } from "../../middleware/auth";
 import { sendSuccess } from "../../utils/response";
 import { getSessionUser } from "../users/users.service";
-import { loginSchema } from "./auth.schema";
+import { adminRegisterSchema, loginSchema } from "./auth.schema";
 import * as authService from "./auth.service";
+
+/** Staff sign-up, limited to the configured staff email domain. */
+export const registerAdmin: RequestHandler = async (req, res) => {
+  const input = adminRegisterSchema.parse(req.body);
+  const { token, user } = await authService.registerAdmin(input);
+
+  setAuthCookie(res, token);
+  sendSuccess(res, { user }, 201);
+};
 
 /** Staff only — candidates and employers sign in through LinkedIn. */
 export const login: RequestHandler = async (req, res) => {

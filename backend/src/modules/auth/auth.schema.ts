@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { adminEmailDomain, isAdminEmail } from "../../config/env";
 import { MAX_PASSWORD_LENGTH } from "../../utils/password";
 
 /** Normalise first, then validate, so "  Foo@Example.COM " and "foo@example.com" are one account. */
@@ -31,10 +32,27 @@ export const registerSchema = z.object({
   name: nameSchema,
 });
 
+/**
+ * Staff sign-up. The role is not accepted from the client here either — reaching
+ * this endpoint at all is what asks for ADMIN, and the email domain is the gate.
+ *
+ * Note this proves only that the address is *on* the domain, not that the person
+ * sending it can receive mail there: nothing in the system verifies an address.
+ * See docs/architecture.md ("Staff accounts") for what that does and does not buy.
+ */
+export const adminRegisterSchema = z.object({
+  email: emailSchema.refine(
+    isAdminEmail,
+    `Staff accounts must use an @${adminEmailDomain} email address`,
+  ),
+  password: passwordSchema,
+});
+
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, "Password is required"),
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type AdminRegisterInput = z.infer<typeof adminRegisterSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;

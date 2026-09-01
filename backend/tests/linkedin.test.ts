@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { adminEmailDomain } from "../src/config/env";
 import { prisma } from "../src/database/prisma";
 import { ApiError } from "../src/utils/apiError";
 import {
@@ -152,11 +153,13 @@ describe("signing in with a LinkedIn profile", () => {
   });
 
   it("links LinkedIn to an existing account when the email is verified", async () => {
-    // An admin is the one account type that still has a password of its own.
-    const existing = await createPasswordAccount("ADMIN", "linkme@example.test");
+    // An admin is the one account type that still has a password of its own, and
+    // signing in with it means the address has to be on the staff domain.
+    const email = `linkme@${adminEmailDomain}`;
+    const existing = await createPasswordAccount("ADMIN", email);
 
     const result = await signInWithLinkedIn(
-      profile({ sub: "subject-link", email: "linkme@example.test", emailVerified: true }),
+      profile({ sub: "subject-link", email, emailVerified: true }),
       undefined,
     );
 
@@ -169,7 +172,7 @@ describe("signing in with a LinkedIn profile", () => {
     // Their password still works afterwards.
     await api()
       .post("/api/auth/login")
-      .send({ email: "linkme@example.test", password: DEFAULT_PASSWORD })
+      .send({ email, password: DEFAULT_PASSWORD })
       .expect(200);
   });
 

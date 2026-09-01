@@ -14,6 +14,11 @@ interface AuthContextValue {
    * with LinkedIn, which is a browser redirect rather than an API call.
    */
   login: (email: string, password: string) => Promise<SessionUser>;
+  /**
+   * Staff sign-up. The API only accepts addresses on the CeonHub staff domain and
+   * always creates an ADMIN — the role is never sent from here.
+   */
+  registerAdmin: (email: string, password: string) => Promise<SessionUser>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -64,6 +69,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       async login(email, password) {
         const data = await apiFetch<{ user: SessionUser }>("/api/auth/login", {
+          method: "POST",
+          body: { email, password },
+        });
+        setUser(data.user);
+        return data.user;
+      },
+      async registerAdmin(email, password) {
+        const data = await apiFetch<{ user: SessionUser }>("/api/auth/admin/register", {
           method: "POST",
           body: { email, password },
         });

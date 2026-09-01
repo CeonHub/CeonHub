@@ -26,3 +26,11 @@ export const SITE_URL = required(
   "NEXT_PUBLIC_SITE_URL",
   "https://www.ceonhub.net",
 );
+
+/**
+ * The email domain staff accounts must use. Display only — the API is what
+ * enforces it — but this has to agree with the backend's ADMIN_EMAIL_DOMAIN, or
+ * the sign-up form promises a domain the API then refuses.
+ */
+export const ADMIN_EMAIL_DOMAIN =
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL_DOMAIN?.trim() || "ceonhub.net";

@@ -15,6 +15,19 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
   JWT_EXPIRES_IN_DAYS: z.coerce.number().int().positive().max(90).default(7),
 
+  /**
+   * The email domain staff accounts live on. ADMIN is the one role that both
+   * registers and signs in with a password, and it is limited to this domain at
+   * each step; candidates and employers join with LinkedIn and are unaffected.
+   * Configurable so a fork or a staging deployment can use its own domain.
+   */
+  ADMIN_EMAIL_DOMAIN: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .regex(/^[a-z0-9-]+(\.[a-z0-9-]+)+$/, "ADMIN_EMAIL_DOMAIN must be a bare domain, e.g. ceonhub.net")
+    .default("ceonhub.net"),
+
   FRONTEND_URL: z.url().default("http://localhost:3000"),
   /** Comma-separated list of allowed browser origins. */
   CORS_ORIGIN: z.string().default("http://localhost:3000"),
@@ -93,6 +106,21 @@ export const env = loadEnv();
 
 export const isProduction = env.NODE_ENV === "production";
 export const isTest = env.NODE_ENV === "test";
+
+/** The email domain staff accounts must be on, to register and to sign in. */
+export const adminEmailDomain = env.ADMIN_EMAIL_DOMAIN;
+
+/**
+ * True when `email` belongs to the staff domain.
+ *
+ * The part after the last "@" is compared exactly rather than testing the whole
+ * address for a suffix: "attacker@notceonhub.net" ends with the domain text but
+ * is somebody else's domain entirely, and a suffix test would let it through.
+ */
+export function isAdminEmail(email: string): boolean {
+  const at = email.lastIndexOf("@");
+  return at !== -1 && email.slice(at + 1).toLowerCase() === adminEmailDomain;
+}
 
 /** Origins allowed to call the API with credentials. */
 export const corsOrigins = env.CORS_ORIGIN.split(",")

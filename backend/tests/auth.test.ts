@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { prisma } from "../src/database/prisma";
+import { adminEmailDomain } from "../src/config/env";
 import { api, createAccount, createAdmin, createPasswordAccount, DEFAULT_PASSWORD } from "./helpers";
 
 /**
@@ -23,6 +24,97 @@ describe("password registration", () => {
 
     expect(response.body.error.code).toBe("NOT_FOUND");
     expect(await prisma.user.count()).toBe(0);
+  });
+});
+
+describe("POST /api/auth/admin/register", () => {
+  const staffEmail = `new.admin@${adminEmailDomain}`;
+
+  it("creates an admin on the staff domain and signs them straight in", async () => {
+    const response = await api()
+      .post("/api/auth/admin/register")
+      .send({ email: staffEmail, password: DEFAULT_PASSWORD })
+      .expect(201);
+
+    expect(response.body.data.user).toMatchObject({
+      email: staffEmail,
+      role: "ADMIN",
+      hasPassword: true,
+    });
+    expect(response.headers["set-cookie"]?.[0]).toContain("HttpOnly");
+  });
+
+  it("refuses an address on any other domain", async () => {
+    const response = await api()
+      .post("/api/auth/admin/register")
+      .send({ email: "outsider@example.test", password: DEFAULT_PASSWORD })
+      .expect(422);
+
+    expect(JSON.stringify(response.body)).toContain(adminEmailDomain);
+    expect(await prisma.user.count()).toBe(0);
+  });
+
+  it("refuses a lookalike domain that merely ends with the staff one", async () => {
+    await api()
+      .post("/api/auth/admin/register")
+      .send({ email: `attacker@not${adminEmailDomain}`, password: DEFAULT_PASSWORD })
+      .expect(422);
+
+    expect(await prisma.user.count()).toBe(0);
+  });
+
+  it("normalises case and surrounding space before checking the domain", async () => {
+    const response = await api()
+      .post("/api/auth/admin/register")
+      .send({ email: `  Mixed.Case@${adminEmailDomain.toUpperCase()} `, password: DEFAULT_PASSWORD })
+      .expect(201);
+
+    expect(response.body.data.user.email).toBe(`mixed.case@${adminEmailDomain}`);
+  });
+
+  it("refuses a weak password", async () => {
+    await api()
+      .post("/api/auth/admin/register")
+      .send({ email: staffEmail, password: "short" })
+      .expect(422);
+
+    expect(await prisma.user.count()).toBe(0);
+  });
+
+  it("refuses an email that is already taken", async () => {
+    await api()
+      .post("/api/auth/admin/register")
+      .send({ email: staffEmail, password: DEFAULT_PASSWORD })
+      .expect(201);
+
+    const response = await api()
+      .post("/api/auth/admin/register")
+      .send({ email: staffEmail, password: DEFAULT_PASSWORD })
+      .expect(409);
+
+    expect(response.body.error.code).toBe("CONFLICT");
+    expect(await prisma.user.count()).toBe(1);
+  });
+
+  it("never accepts a role from the client", async () => {
+    const response = await api()
+      .post("/api/auth/admin/register")
+      .send({ email: staffEmail, password: DEFAULT_PASSWORD, role: "CANDIDATE" })
+      .expect(201);
+
+    expect(response.body.data.user.role).toBe("ADMIN");
+  });
+
+  it("lets the new admin sign in afterwards", async () => {
+    await api()
+      .post("/api/auth/admin/register")
+      .send({ email: staffEmail, password: DEFAULT_PASSWORD })
+      .expect(201);
+
+    await api()
+      .post("/api/auth/login")
+      .send({ email: staffEmail, password: DEFAULT_PASSWORD })
+      .expect(200);
   });
 });
 
@@ -74,6 +166,18 @@ describe("POST /api/auth/login", () => {
       .expect(401);
 
     expect(wrongPassword.body.error.message).toBe(unknownEmail.body.error.message);
+  });
+
+  it("blocks an admin whose address is not on the staff domain", async () => {
+    // Predates the domain rule, or was moved off it since.
+    const legacy = await createPasswordAccount("ADMIN", "legacy.admin@example.test");
+
+    const response = await api()
+      .post("/api/auth/login")
+      .send({ email: legacy.email, password: DEFAULT_PASSWORD })
+      .expect(403);
+
+    expect(response.body.error.message).toContain(adminEmailDomain);
   });
 
   it("blocks a disabled admin", async () => {

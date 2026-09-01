@@ -1,6 +1,7 @@
 import request from "supertest";
 import type TestAgent from "supertest/lib/agent";
 import { app } from "../src/app";
+import { adminEmailDomain } from "../src/config/env";
 import { prisma } from "../src/database/prisma";
 import { signInWithLinkedIn } from "../src/modules/auth/linkedin.service";
 import { hashPassword } from "../src/utils/password";
@@ -23,6 +24,12 @@ let counter = 0;
 function unique(prefix: string): { email: string; sub: string } {
   counter += 1;
   return { email: `${prefix}${counter}@example.test`, sub: `linkedin-sub-${prefix}${counter}` };
+}
+
+/** An address on the staff domain, which is the only kind that can sign in as ADMIN. */
+function uniqueAdmin(): { email: string } {
+  counter += 1;
+  return { email: `admin${counter}@${adminEmailDomain}` };
 }
 
 /** Puts an existing user's session cookie into a fresh agent's jar. */
@@ -123,7 +130,8 @@ export async function postJob(
 
 /** Admins are never created through the API, only by the seed — mirror that here. */
 export async function createAdmin(): Promise<TestAccount & { password: string }> {
-  const { email } = unique("admin");
+  // Staff sign-in is gated on the admin email domain, so test admins must be on it.
+  const { email } = uniqueAdmin();
 
   const user = await prisma.user.create({
     data: { email, passwordHash: await hashPassword(DEFAULT_PASSWORD), role: "ADMIN" },

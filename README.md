@@ -328,8 +328,13 @@ Only one seeded account can be signed into:
 
 | Role | Email | How |
 | --- | --- | --- |
-| Admin | `admin@ceonhub.example` / `Password123!` | `/admin/login` |
+| Admin | `admin@ceonhub.net` / `Password123!` | `/admin/login` |
 | Employers, candidates | `maria.employer@…`, `ana.candidate@…`, … | **cannot sign in** |
+
+Staff can also create their own account at `/admin/register`, which accepts any
+`@ceonhub.net` address (configurable with `ADMIN_EMAIL_DOMAIN`). Note that no email
+verification exists, so the domain proves where an address lives and not who is typing it —
+see docs/architecture.md ("Staff accounts") before exposing that page publicly.
 
 The demo candidates and employers have no password, exactly like real ones — CeonHub
 accounts are created through LinkedIn. Their data fills the public site and the admin
