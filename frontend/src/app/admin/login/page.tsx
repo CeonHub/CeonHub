@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function StaffLoginPage() {
   return (
     <main className="mx-auto w-full max-w-md px-4 py-16">
-      <h1 className="text-2xl font-semibold text-ink-900">Staff sign-in</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight text-ink-950">Staff sign-in</h1>
       <p className="mt-1 text-sm text-ink-500">
         For CeonHub administrators. Candidates and employers sign in with LinkedIn.
       </p>

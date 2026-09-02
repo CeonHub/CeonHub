@@ -42,11 +42,11 @@ export default async function CompaniesPage({
           defaultValue={q ?? ""}
           placeholder="Search companies"
           aria-label="Search companies"
-          className="w-full max-w-sm rounded-md border border-ink-200 bg-white px-3 py-2 text-sm"
+          className="w-full max-w-sm rounded-control border border-ink-200 bg-white px-3 py-2 text-sm"
         />
         <button
           type="submit"
-          className="rounded-md border border-brand-edge bg-brand px-4 py-2 text-sm font-medium text-brand-fg hover:bg-brand-hover"
+          className="rounded-control border border-brand-edge bg-brand px-4 py-2 text-sm font-medium text-brand-fg hover:bg-brand-hover"
         >
           Search
         </button>

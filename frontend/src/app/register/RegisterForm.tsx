@@ -56,7 +56,7 @@ export function RegisterForm() {
             <label
               key={choice.value}
               className={cn(
-                "flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors",
+                "flex cursor-pointer items-start gap-3 rounded-control border p-3 transition-colors",
                 role === choice.value
                   ? "border-primary-600 bg-primary-50"
                   : "border-ink-200 bg-white hover:bg-ink-50",

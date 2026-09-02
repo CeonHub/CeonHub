@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Figtree } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SITE_URL } from "@/lib/env";
@@ -30,6 +31,18 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * One family for the whole product, loaded as a variable font so the display
+ * weights the headings need cost nothing extra over the body weight. Next
+ * self-hosts it at build time, so there is no runtime request to Google and no
+ * flash of a fallback face on a cold visit.
+ */
+const figtree = Figtree({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+});
+
 /** Matches the green in the mark, so mobile browser chrome picks up the brand. */
 export const viewport: Viewport = {
   themeColor: "#23e837",
@@ -37,7 +50,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={figtree.variable}>
       <body className="flex min-h-screen flex-col">
         <AuthProvider>
           <Navbar />

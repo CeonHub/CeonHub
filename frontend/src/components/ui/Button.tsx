@@ -12,26 +12,37 @@ export type ButtonVariant = "primary" | "accent" | "secondary" | "inverse" | "gh
 export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors " +
-  "disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 rounded-control font-semibold " +
+  "transition-[background-color,border-color,box-shadow,transform] duration-150 " +
+  "active:translate-y-px disabled:pointer-events-none disabled:opacity-55";
 
+/**
+ * The filled variants carry their edge as an inset ring rather than a border, so
+ * the button's box stays exactly the height the size says it is — a 1px border
+ * on a 44px control is the difference between a row of buttons lining up with
+ * the input next to them and not.
+ */
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    "border border-brand-edge bg-brand text-brand-fg shadow-card hover:bg-brand-hover active:bg-brand-active",
+    "bg-brand text-brand-fg shadow-control ring-1 ring-brand-edge ring-inset " +
+    "hover:bg-brand-hover active:bg-brand-active",
   accent:
-    "border border-accent-edge bg-accent text-accent-fg shadow-card hover:bg-accent-hover active:bg-accent-active",
+    "bg-accent text-accent-fg shadow-control ring-1 ring-accent-edge ring-inset " +
+    "hover:bg-accent-hover active:bg-accent-active",
   secondary:
-    "border border-ink-200 bg-white text-ink-800 shadow-card hover:border-ink-300 hover:bg-ink-50",
-  inverse: "border border-white/25 bg-transparent text-white hover:bg-white/10",
+    "bg-white text-ink-900 shadow-control ring-1 ring-ink-200 ring-inset " +
+    "hover:bg-ink-50 hover:ring-ink-300",
+  inverse: "bg-night-raised text-white ring-1 ring-night-line ring-inset hover:bg-night-line",
   ghost: "text-ink-600 hover:bg-ink-100 hover:text-ink-900",
   danger:
-    "border border-danger-700 bg-danger-600 text-white shadow-card hover:bg-danger-700 active:bg-danger-800",
+    "bg-danger-600 text-white shadow-control ring-1 ring-danger-700 ring-inset " +
+    "hover:bg-danger-700 active:bg-danger-800",
 };
 
 const SIZES: Record<ButtonSize, string> = {
-  sm: "h-8 px-3 text-sm",
-  md: "h-10 px-4 text-sm",
-  lg: "h-11 px-5 text-base",
+  sm: "h-9 px-3.5 text-sm",
+  md: "h-11 px-5 text-sm",
+  lg: "h-12 px-6 text-[0.9375rem]",
 };
 
 export function buttonClasses(

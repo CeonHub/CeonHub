@@ -1,4 +1,5 @@
 import { Container } from "@/components/layout/Container";
+import { cn } from "@/lib/cn";
 
 export const CANDIDATE_STEPS = [
   { title: "Create your profile", body: "Name, skills, availability and a resume. Two minutes." },
@@ -16,11 +17,11 @@ export const EMPLOYER_STEPS = [
 
 export function HowItWorks() {
   return (
-    <section className="py-16" aria-label="How CeonHub works">
+    <section className="bg-white py-20 lg:py-24" aria-label="How CeonHub works">
       <Container>
-        <h2 className="text-2xl font-semibold text-ink-900">How CeonHub works</h2>
+        <h2 className="text-section text-ink-950">How CeonHub works</h2>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
           <StepColumn title="For candidates" steps={CANDIDATE_STEPS} />
           <StepColumn title="For employers" steps={EMPLOYER_STEPS} />
         </div>
@@ -32,23 +33,30 @@ export function HowItWorks() {
 export function StepColumn({
   title,
   steps,
+  className,
 }: {
   title: string;
   steps: Array<{ title: string; body: string }>;
+  className?: string;
 }) {
   return (
-    <div className="rounded-card border border-ink-200 bg-white p-6">
-      <h3 className="font-semibold text-ink-900">{title}</h3>
-      <ol className="mt-4 space-y-4">
+    <div className={cn("rounded-panel bg-ink-50 p-8", className)}>
+      <h3 className="text-lg font-bold tracking-tight text-ink-950">{title}</h3>
+
+      {/* The numeral is a hanging figure rather than a chip: at this density a row
+          of filled circles turns the column into a checklist, and these are
+          stages, not tasks. The body text lines up under the title, not the
+          number, so the left edge of the prose stays straight. */}
+      <ol className="mt-6 space-y-6">
         {steps.map((step, index) => (
-          <li key={step.title} className="flex gap-3">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-xs font-semibold text-primary-700">
-              {index + 1}
-            </span>
-            <div>
-              <p className="font-medium text-ink-900">{step.title}</p>
-              <p className="text-sm text-ink-600">{step.body}</p>
+          <li key={step.title}>
+            <div className="flex items-baseline gap-2.5">
+              <span aria-hidden="true" className="text-lg font-extrabold text-primary-600">
+                {index + 1}
+              </span>
+              <p className="font-bold tracking-tight text-ink-950">{step.title}</p>
             </div>
+            <p className="mt-2 text-sm leading-relaxed text-ink-600">{step.body}</p>
           </li>
         ))}
       </ol>

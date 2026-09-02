@@ -190,7 +190,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
 
       <section className="mt-8" aria-label="Latest jobs">
         <div className="flex items-center justify-between pb-3">
-          <h2 className="text-lg font-semibold text-ink-900">Latest jobs</h2>
+          <h2 className="text-lg font-extrabold tracking-tight text-ink-950">Latest jobs</h2>
           <Link href="/candidate/jobs" className="text-sm font-medium text-primary-700 hover:underline">
             Jobs for you
           </Link>

@@ -20,9 +20,9 @@ export function Alert({ tone = "info", title, children, className }: AlertProps)
   return (
     <div
       role={tone === "error" ? "alert" : "status"}
-      className={cn("rounded-md border px-4 py-3 text-sm", TONES[tone], className)}
+      className={cn("rounded-control border px-4 py-3 text-sm", TONES[tone], className)}
     >
-      {title && <p className="font-semibold">{title}</p>}
+      {title && <p className="font-bold">{title}</p>}
       <div className={title ? "mt-1" : undefined}>{children}</div>
     </div>
   );

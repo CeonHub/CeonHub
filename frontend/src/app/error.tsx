@@ -11,7 +11,7 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
   return (
     <main>
       <Container className="max-w-xl py-24 text-center">
-        <h1 className="text-3xl font-semibold text-ink-900">Something went wrong</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-ink-950">Something went wrong</h1>
         <p className="mt-3 text-ink-600">
           The page could not be loaded. This is usually temporary — trying again often works. If it
           keeps happening, the API may be unreachable.

@@ -94,7 +94,7 @@ function InvitationCard({
       <div className="p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="font-semibold text-ink-900">
+            <h2 className="font-bold text-ink-950">
               <Link href={`/jobs/${invitation.job.id}`} className="hover:text-primary-700">
                 {invitation.job.title}
               </Link>

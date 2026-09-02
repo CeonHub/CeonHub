@@ -85,30 +85,33 @@ export default async function HomePage() {
   }));
 
   return (
-    <main>
+    <main className="bg-white">
       <HomeHero latestJobs={latestJobs} />
       <WorkTypes types={workTypes} />
 
       {companies.length > 0 && (
-        <section className="pb-16" aria-label="Companies hiring">
+        <section className="py-20 lg:py-24" aria-label="Companies hiring">
           <Container>
-            <div className="flex items-end justify-between">
-              <h2 className="text-2xl font-semibold text-ink-900">Companies hiring now</h2>
-              <Link href="/companies" className="text-sm font-medium text-primary-700 hover:underline">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <h2 className="text-section text-ink-950">Companies hiring now</h2>
+              <Link
+                href="/companies"
+                className="text-sm font-semibold text-primary-600 transition-colors hover:text-primary-700"
+              >
                 All companies
               </Link>
             </div>
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {companies.map((company) => (
                 <li key={company.id}>
                   <Link
                     href={`/companies/${company.slug}`}
-                    className="flex items-center gap-3 rounded-card border border-ink-200 bg-white p-4 transition-colors hover:border-primary-300"
+                    className="flex items-center gap-4 rounded-card bg-ink-50 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-lift"
                   >
                     <CompanyLogo name={company.name} logoUrl={company.logoUrl ?? null} />
                     <span className="min-w-0">
-                      <span className="block truncate font-medium text-ink-900">{company.name}</span>
-                      <span className="block text-sm text-ink-500">
+                      <span className="block truncate font-bold text-ink-950">{company.name}</span>
+                      <span className="block text-sm text-ink-600">
                         {company.openJobCount ?? 0} open{" "}
                         {(company.openJobCount ?? 0) === 1 ? "role" : "roles"}
                       </span>

@@ -11,7 +11,7 @@ export function JobCard({ job }: { job: JobSummary }) {
     <article className="relative rounded-card border border-ink-200 bg-white p-5 transition-colors hover:border-primary-200">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h3 className="text-base font-semibold text-ink-900">
+          <h3 className="text-base font-bold text-ink-950">
             <Link href={`/jobs/${job.id}`} className="hover:text-primary-700">
               {/* Stretch the link across the card for easier tapping on mobile. */}
               <span className="absolute inset-0 sm:hidden" aria-hidden="true" />

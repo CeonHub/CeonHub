@@ -14,7 +14,7 @@ export function CandidateCard({
     <article className="rounded-card border border-ink-200 bg-white p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="font-semibold text-ink-900">{candidate.name}</h3>
+          <h3 className="font-bold text-ink-950">{candidate.name}</h3>
           {candidate.headline && <p className="text-sm text-ink-600">{candidate.headline}</p>}
           <p className="mt-0.5 text-sm text-ink-500">
             {[candidate.location, candidate.country].filter(Boolean).join(", ") ||

@@ -53,7 +53,7 @@ function EmployerJob({ jobId }: { jobId: string }) {
         <StatusActions job={job} onChanged={jobQuery.reload} />
 
         <section aria-label="Applicants">
-          <h2 className="pb-3 text-lg font-semibold text-ink-900">
+          <h2 className="pb-3 text-lg font-extrabold tracking-tight text-ink-950">
             Applicants ({applicationsQuery.data?.meta.total ?? 0})
           </h2>
           {applicationsQuery.loading ? (
@@ -72,7 +72,7 @@ function EmployerJob({ jobId }: { jobId: string }) {
         </section>
 
         <section aria-label="Edit job">
-          <h2 className="pb-3 text-lg font-semibold text-ink-900">Edit job</h2>
+          <h2 className="pb-3 text-lg font-extrabold tracking-tight text-ink-950">Edit job</h2>
           <JobForm categories={metaQuery.data?.categories ?? []} job={job} />
         </section>
       </div>

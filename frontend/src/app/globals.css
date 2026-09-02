@@ -9,22 +9,20 @@
  * white — 600 clears 4.5:1 for white text on a filled button, 700 clears 6:1
  * for body-size text on a light surface.
  *
- * On top of the fixed ramps sit two roles: primary-* and secondary-*. Green
- * leads, orange supports, and the assignment is fixed. Components reference the
- * roles rather than the hues directly, so the two stay separable — swapping them
- * is a change to this file alone, not to every component.
+ * On top of the fixed ramps sit two roles: primary-* and secondary-*. Orange
+ * leads — it is the colour every call to action is painted in — and green
+ * supports, carrying accents, status and the one highlighted word in the hero.
+ * Components reference the roles rather than the hues directly, so the two stay
+ * separable: swapping them is a change to this file alone.
  *
  * available-* and immediate-* stay pinned to green and orange respectively:
- * they carry marketplace meaning, so they must not move when the accent flips.
- *
- * No web fonts are loaded: the system stack renders instantly and removes a
- * build-time network dependency.
+ * they carry marketplace meaning, so they must not move when the roles flip.
  */
 
 :root {
   /* Fixed brand ramps */
   --green-50: #f4fef3;
-  --green-100: #d9fdd7;
+  --green-100: #edfdee;
   --green-200: #8cfd8b;
   --green-300: #28ef3b;
   --green-400: #0bd229;
@@ -56,22 +54,37 @@
   --logo-orange: #ff9100;
 
   --green-fill: var(--logo-green);
-  --green-fill-fg: var(--green-950);
   --orange-fill: var(--logo-orange);
-  --orange-fill-fg: var(--orange-950);
 
-  /* Neutrals and danger */
-  --ink-50: #fbfbfb;
-  --ink-100: #f3f4f5;
-  --ink-200: #e3e5e7;
-  --ink-300: #cdd0d4;
-  --ink-400: #b1b6bd;
-  --ink-500: #8e96a0;
-  --ink-600: #6e7682;
-  --ink-700: #5c626d;
-  --ink-800: #494e56;
-  --ink-900: #393e43;
-  --ink-950: #222428;
+  /* Both logo inks are light and highly saturated. Near-black type sits on them
+     more cleanly than a tinted dark does — a brown-on-orange or green-on-green
+     label reads as a print misregistration at button sizes. */
+  --green-fill-fg: #10101c;
+  --orange-fill-fg: #10101c;
+
+  /**
+   * Neutrals. Very slightly cool at the dark end and very slightly warm at the
+   * light end, which is what stops large flat panels from looking like unpainted
+   * #eee. 50 is the muted page band, 200 the hairline every card is drawn with,
+   * 950 the ink the dark sections and the footer are filled with.
+   */
+  --ink-50: #f8f8f6;
+  --ink-100: #f1f1ef;
+  --ink-200: #e8e8e6;
+  --ink-300: #d8d8d5;
+  --ink-400: #b4b4b6;
+  --ink-500: #8a8a92;
+  --ink-600: #67676f;
+  --ink-700: #4a4a55;
+  --ink-800: #33333d;
+  --ink-900: #1e1e28;
+  --ink-950: #10101c;
+
+  /* The dark sections are one surface with one raised step and one hairline —
+     any more levels and the depth stops reading. */
+  --night: #10101c;
+  --night-raised: #17172a;
+  --night-line: #232336;
 
   --danger-50: #fefbfa;
   --danger-100: #fcf2f0;
@@ -85,54 +98,55 @@
   --danger-900: #70241b;
   --danger-950: #421611;
 
-  /* Role assignment: green leads, orange supports */
-  --primary-50: var(--green-50);
-  --primary-100: var(--green-100);
-  --primary-200: var(--green-200);
-  --primary-300: var(--green-300);
-  --primary-400: var(--green-400);
-  --primary-500: var(--green-500);
-  --primary-600: var(--green-600);
-  --primary-700: var(--green-700);
-  --primary-800: var(--green-800);
-  --primary-900: var(--green-900);
-  --primary-950: var(--green-950);
-  --primary-logo: var(--logo-green);
+  /* Role assignment: orange leads (actions), green supports (accent, status) */
+  --primary-50: var(--orange-50);
+  --primary-100: var(--orange-100);
+  --primary-200: var(--orange-200);
+  --primary-300: var(--orange-300);
+  --primary-400: var(--orange-400);
+  --primary-500: var(--orange-500);
+  --primary-600: var(--orange-600);
+  --primary-700: var(--orange-700);
+  --primary-800: var(--orange-800);
+  --primary-900: var(--orange-900);
+  --primary-950: var(--orange-950);
+  --primary-logo: var(--logo-orange);
 
-  --secondary-50: var(--orange-50);
-  --secondary-100: var(--orange-100);
-  --secondary-200: var(--orange-200);
-  --secondary-300: var(--orange-300);
-  --secondary-400: var(--orange-400);
-  --secondary-500: var(--orange-500);
-  --secondary-600: var(--orange-600);
-  --secondary-700: var(--orange-700);
-  --secondary-800: var(--orange-800);
-  --secondary-900: var(--orange-900);
-  --secondary-950: var(--orange-950);
-  --secondary-logo: var(--logo-orange);
+  --secondary-50: var(--green-50);
+  --secondary-100: var(--green-100);
+  --secondary-200: var(--green-200);
+  --secondary-300: var(--green-300);
+  --secondary-400: var(--green-400);
+  --secondary-500: var(--green-500);
+  --secondary-600: var(--green-600);
+  --secondary-700: var(--green-700);
+  --secondary-800: var(--green-800);
+  --secondary-900: var(--green-900);
+  --secondary-950: var(--green-950);
+  --secondary-logo: var(--logo-green);
 
-  --brand-fill: var(--green-fill);
-  --brand-fill-fg: var(--green-fill-fg);
-  --accent-fill: var(--orange-fill);
-  --accent-fill-fg: var(--orange-fill-fg);
+  --brand-fill: var(--orange-fill);
+  --brand-fill-fg: var(--orange-fill-fg);
+  --accent-fill: var(--green-fill);
+  --accent-fill-fg: var(--green-fill-fg);
 }
 
 /**
- * Hover, press and edge are all mixed from the ink filling the role, so the
- * relationship between them is stated once rather than hand-picked per hue.
+ * Hover and press are mixed from the ink filling the role, so the relationship
+ * between them is stated once rather than hand-picked per hue.
  *
- * `edge` is darker than `active` on purpose: the logo inks are light enough that
- * a filled button has no visible boundary against a white page, and the outline
- * has to stay darker than the fill through every state to read as one.
+ * `edge` is a transparent tint rather than a darker ink: the filled buttons are
+ * large flat blocks of a vivid colour, and a hard darker outline around them
+ * reads as a border that was left on by accident. What they need instead is the
+ * shadow below.
  */
 :root {
-  --brand-fill-hover: color-mix(in oklab, var(--brand-fill), #000 14%);
-  --brand-fill-active: color-mix(in oklab, var(--brand-fill), #000 26%);
-  --accent-fill-hover: color-mix(in oklab, var(--accent-fill), #000 14%);
-  --accent-fill-active: color-mix(in oklab, var(--accent-fill), #000 26%);
-  --brand-fill-edge: color-mix(in oklab, var(--brand-fill), #000 28%);
-  --accent-fill-edge: color-mix(in oklab, var(--accent-fill), #000 28%);
+  --brand-fill-hover: color-mix(in oklab, var(--brand-fill), #000 10%);
+  --brand-fill-active: color-mix(in oklab, var(--brand-fill), #000 20%);
+  --accent-fill-hover: color-mix(in oklab, var(--accent-fill), #000 10%);
+  --accent-fill-active: color-mix(in oklab, var(--accent-fill), #000 20%);
+  --brand-fill-edge: color-mix(in oklab, var(--brand-fill), #000 8%);
+  --accent-fill-edge: color-mix(in oklab, var(--accent-fill), #000 8%);
 }
 
 /**
@@ -152,6 +166,10 @@
   --color-ink-800: var(--ink-800);
   --color-ink-900: var(--ink-900);
   --color-ink-950: var(--ink-950);
+
+  --color-night: var(--night);
+  --color-night-raised: var(--night-raised);
+  --color-night-line: var(--night-line);
 
   --color-primary-50: var(--primary-50);
   --color-primary-100: var(--primary-100);
@@ -179,7 +197,7 @@
   --color-secondary-950: var(--secondary-950);
   --color-secondary-logo: var(--secondary-logo);
 
-  /* Meaning, not decoration — these stay put when the accent flips. */
+  /* Meaning, not decoration — these stay put when the roles flip. */
   --color-available-50: var(--green-50);
   --color-available-100: var(--green-100);
   --color-available-600: var(--green-600);
@@ -223,16 +241,24 @@
 }
 
 @theme {
+  /* --font-display is set by next/font in the root layout; the stack behind it
+     is what renders during the swap and if the face fails to load. */
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    "Noto Sans", sans-serif;
+    var(--font-display), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  --radius-card: 0.75rem;
+  /* Three radii, and only three: controls, cards, and the panels that hold
+     cards. Everything rounder than a control has to be one of the other two. */
+  --radius-control: 0.625rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.25rem;
 
-  /* Soft, low-contrast elevation — the palette is loud enough already. */
-  --shadow-card: 0 1px 2px 0 rgb(34 36 40 / 0.04), 0 1px 3px 0 rgb(34 36 40 / 0.06);
-  --shadow-lift: 0 4px 12px -2px rgb(34 36 40 / 0.08), 0 2px 6px -2px rgb(34 36 40 / 0.05);
+  /* Elevation is carried by a wide, very soft ambient shadow rather than a hard
+     drop — at these radii a tight shadow just makes the corners look dirty. */
+  --shadow-card: 0 1px 2px 0 rgb(16 16 28 / 0.04), 0 4px 12px -4px rgb(16 16 28 / 0.06);
+  --shadow-lift: 0 2px 4px 0 rgb(16 16 28 / 0.05), 0 12px 28px -8px rgb(16 16 28 / 0.12);
+  --shadow-control: 0 1px 2px 0 rgb(16 16 28 / 0.08);
 }
 
 @layer base {
@@ -245,6 +271,7 @@
     color: var(--ink-900);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* One visible focus style everywhere, including keyboard navigation. */
@@ -261,23 +288,53 @@
   }
 
   ::selection {
-    background-color: var(--primary-200);
-    color: var(--primary-950);
+    background-color: var(--secondary-200);
+    color: var(--secondary-950);
   }
 
+  /**
+   * Headings are set tight and heavy. The tracking is negative and grows with
+   * size, because the optical gaps in a geometric face open up as it scales —
+   * the display sizes need roughly twice the correction of a card title.
+   */
   h1,
   h2,
-  h3 {
-    letter-spacing: -0.015em;
+  h3,
+  h4 {
+    font-weight: 800;
+    letter-spacing: -0.025em;
     text-wrap: balance;
+  }
+
+  h1 {
+    letter-spacing: -0.04em;
   }
 }
 
 @layer utilities {
-  /* The logo gradient, for hero rules and decorative accents. It always runs
-     primary to secondary, so it reverses with the chosen accent. Decorative
-     only — the midpoint of these two hues is muddy, so never put type on it. */
-  .brand-gradient {
-    background-image: linear-gradient(to right, var(--primary-logo), var(--secondary-logo));
+  /* Display type: the hero and the section openers. Kept as a utility rather
+     than a size step because the tracking has to travel with the size. */
+  .text-display {
+    font-size: clamp(2.5rem, 1.5rem + 4.2vw, 3.75rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    font-weight: 800;
+  }
+
+  .text-section {
+    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.375rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+  }
+
+  /* Eyebrow labels above a section heading. Small, wide, and always paired with
+     a dot so the colour is doing decoration rather than carrying meaning. */
+  .text-eyebrow {
+    font-size: 0.6875rem;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 }

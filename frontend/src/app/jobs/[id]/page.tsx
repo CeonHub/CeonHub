@@ -67,7 +67,7 @@ export default async function JobDetailPage({ params }: PageProps) {
           </nav>
 
           <header>
-            <h1 className="text-3xl font-semibold text-ink-900">{job.title}</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight text-ink-950">{job.title}</h1>
             <p className="mt-2 text-ink-600">
               <Link
                 href={`/companies/${job.company.slug}`}
@@ -92,7 +92,7 @@ export default async function JobDetailPage({ params }: PageProps) {
 
           {job.skills.length > 0 && (
             <section className="mt-8" aria-label="Skills">
-              <h2 className="text-sm font-semibold text-ink-900">Skills</h2>
+              <h2 className="text-sm font-bold text-ink-950">Skills</h2>
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {job.skills.map((skill) => (
                   <li key={skill.id}>

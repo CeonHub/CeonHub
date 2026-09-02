@@ -44,7 +44,7 @@ export default function HowItWorksPage() {
     <main>
       <Container className="py-16">
         <div className="max-w-3xl">
-          <h1 className="text-3xl font-semibold text-ink-900">How CeonHub works</h1>
+          <h1 className="text-section text-ink-950">How CeonHub works</h1>
           <p className="mt-4 text-lg text-ink-600">
             Two sides, one loop: employers post and invite, candidates search and apply. Here is what
             each side actually does.
@@ -52,12 +52,20 @@ export default function HowItWorksPage() {
         </div>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <StepColumn title="For candidates" steps={CANDIDATE_STEPS} />
-          <StepColumn title="For employers" steps={EMPLOYER_STEPS} />
+          <StepColumn
+            title="For candidates"
+            steps={CANDIDATE_STEPS}
+            className="border border-ink-200 bg-white"
+          />
+          <StepColumn
+            title="For employers"
+            steps={EMPLOYER_STEPS}
+            className="border border-ink-200 bg-white"
+          />
         </div>
 
         <section className="mt-12 max-w-3xl" aria-label="Common questions">
-          <h2 className="text-2xl font-semibold text-ink-900">Common questions</h2>
+          <h2 className="text-2xl font-extrabold tracking-tight text-ink-950">Common questions</h2>
           <div className="mt-6 space-y-3">
             {FAQ.map((entry) => (
               <Card key={entry.question}>

@@ -15,7 +15,7 @@ export function CompanyLogo({
   className?: string;
 }) {
   const classes = cn(
-    "flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md border border-ink-200 bg-ink-50",
+    "flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-control border border-ink-200 bg-ink-50",
     className,
   );
 

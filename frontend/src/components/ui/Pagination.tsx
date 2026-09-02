@@ -12,7 +12,7 @@ interface PaginationProps {
 }
 
 const ITEM =
-  "inline-flex h-9 min-w-9 items-center justify-center rounded-md border px-3 text-sm font-medium";
+  "inline-flex h-9 min-w-9 items-center justify-center rounded-control border px-3 text-sm font-medium";
 
 export function Pagination({ page, totalPages, hrefFor, onPageChange, className }: PaginationProps) {
   if (totalPages <= 1) return null;

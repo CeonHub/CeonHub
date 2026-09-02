@@ -33,17 +33,21 @@ const SECTIONS = [
   },
 ];
 
+/**
+ * Filled with the same near-black the private-hiring section uses, so the page
+ * closes on the brand's dark surface rather than trailing off into another white
+ * band. The logo is the only saturated thing down here on purpose.
+ */
 export function Footer() {
   return (
-    <footer className="mt-16 border-t border-ink-200 bg-white">
-      <div aria-hidden="true" className="brand-gradient h-1 w-full" />
-      <Container className="py-12">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" aria-label="CeonHub home" className="inline-block rounded-md">
-              <Image src={longLogo} alt="" className="h-10 w-auto" sizes="177px" />
+    <footer className="bg-night text-ink-400">
+      <Container className="py-16">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-8">
+          <div>
+            <Link href="/" aria-label="CeonHub home" className="inline-block rounded-control">
+              <Image src={longLogo} alt="" className="h-9 w-auto" sizes="160px" />
             </Link>
-            <p className="mt-4 max-w-xs text-sm text-ink-600">
+            <p className="mt-6 max-w-xs text-sm leading-relaxed text-ink-500">
               Find work, hire talent, and connect privately across the US — a center of network for
               people and the companies looking for them.
             </p>
@@ -51,13 +55,13 @@ export function Footer() {
 
           {SECTIONS.map((section) => (
             <div key={section.title}>
-              <h2 className="text-sm font-semibold text-ink-900">{section.title}</h2>
-              <ul className="mt-3 space-y-2">
+              <h2 className="text-eyebrow text-white">{section.title}</h2>
+              <ul className="mt-5 space-y-3">
                 {section.links.map((link) => (
                   <li key={link.href + link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-ink-600 transition-colors hover:text-primary-700"
+                      className="text-sm text-ink-400 transition-colors hover:text-white"
                     >
                       {link.label}
                     </Link>
@@ -68,7 +72,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-10 border-t border-ink-100 pt-6">
+        <div className="mt-14 border-t border-night-line pt-8">
           <p className="text-sm text-ink-500">
             © {new Date().getFullYear()} CeonHub — find work, hire talent, connect privately.
           </p>

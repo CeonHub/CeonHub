@@ -78,7 +78,7 @@ function AdminOverview() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section aria-label={title}>
-      <h2 className="pb-3 text-lg font-semibold text-ink-900">{title}</h2>
+      <h2 className="pb-3 text-lg font-extrabold tracking-tight text-ink-950">{title}</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{children}</div>
     </section>
   );

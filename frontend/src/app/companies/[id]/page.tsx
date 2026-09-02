@@ -58,7 +58,7 @@ export default async function CompanyPage({ params }: PageProps) {
       <header className="flex flex-wrap items-start gap-5">
         <CompanyLogo name={company.name} logoUrl={company.logoUrl ?? null} className="h-16 w-16" />
         <div className="min-w-0 flex-1">
-          <h1 className="text-3xl font-semibold text-ink-900">{company.name}</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-ink-950">{company.name}</h1>
           <p className="mt-1 text-sm text-ink-500">
             {[company.location, company.country].filter(Boolean).join(", ") ||
               "Location not specified"}
@@ -78,7 +78,7 @@ export default async function CompanyPage({ params }: PageProps) {
 
       {company.description && (
         <section className="mt-8 max-w-3xl" aria-label="About">
-          <h2 className="text-sm font-semibold text-ink-900">About</h2>
+          <h2 className="text-sm font-bold text-ink-950">About</h2>
           <p className="mt-2 whitespace-pre-line text-[0.95rem] leading-7 text-ink-700">
             {company.description}
           </p>
@@ -86,7 +86,7 @@ export default async function CompanyPage({ params }: PageProps) {
       )}
 
       <section className="mt-10" aria-label="Open roles">
-        <h2 className="text-lg font-semibold text-ink-900">
+        <h2 className="text-lg font-extrabold tracking-tight text-ink-950">
           Open roles {jobs ? `(${jobs.meta.total})` : ""}
         </h2>
 

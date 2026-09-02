@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <main>
       <Container className="max-w-3xl py-16">
-        <h1 className="text-3xl font-semibold text-ink-900">About CeonHub</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-ink-950">About CeonHub</h1>
 
         <div className="mt-6 space-y-5 text-[1.05rem] leading-8 text-ink-700">
           <p>
@@ -27,7 +27,7 @@ export default function AboutPage() {
             income and internships, alongside conventional full-time roles.
           </p>
 
-          <h2 className="pt-4 text-xl font-semibold text-ink-900">Where we operate</h2>
+          <h2 className="pt-4 text-xl font-extrabold tracking-tight text-ink-950">Where we operate</h2>
           <p>
             CeonHub is a United States marketplace. Employers post roles based in the US,
             candidates are looking for work in the US, and pay is quoted in US dollars. Remote
@@ -35,7 +35,7 @@ export default function AboutPage() {
             worldwide, so time zones overlap and the paperwork is one country&rsquo;s.
           </p>
 
-          <h2 className="pt-4 text-xl font-semibold text-ink-900">What makes it different</h2>
+          <h2 className="pt-4 text-xl font-extrabold tracking-tight text-ink-950">What makes it different</h2>
           <p>
             <strong className="font-semibold text-ink-900">Speed is a first-class filter.</strong>{" "}
             Employers mark a job as an immediate start, and candidates mark themselves as available
@@ -55,7 +55,7 @@ export default function AboutPage() {
             the candidate answers it themselves.
           </p>
 
-          <h2 className="pt-4 text-xl font-semibold text-ink-900">Where it is going</h2>
+          <h2 className="pt-4 text-xl font-extrabold tracking-tight text-ink-950">Where it is going</h2>
           <p>
             This is an early version, deliberately small. The focus is on making the core loop work
             reliably: post a job, find it, apply, review, hire — plus private invitations. Payments,

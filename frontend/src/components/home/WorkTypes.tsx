@@ -14,30 +14,57 @@ export interface WorkType {
  */
 export function WorkTypes({ types }: { types: WorkType[] }) {
   return (
-    <section className="py-16" aria-label="Ways to work on CeonHub">
+    <section className="bg-ink-50 py-20 lg:py-24" aria-label="Ways to work on CeonHub">
       <Container>
-        <h2 className="text-2xl font-semibold text-ink-900">Work the way you need to</h2>
-        <p className="mt-2 max-w-2xl text-ink-600">
+        <h2 className="text-section text-ink-950">Work the way you need to</h2>
+        <p className="mt-4 max-w-2xl leading-relaxed text-ink-700">
           Every job on CeonHub is tagged with how it actually works, so you can filter for the kind
           of opportunity you are after instead of reading through job descriptions.
         </p>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {types.map((type) => (
             <Link
               key={type.href}
               href={type.href}
-              className="rounded-card border border-ink-200 bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary-400 hover:shadow-lift"
+              className="group flex flex-col rounded-card bg-white p-6 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-lift"
             >
-              <p className="text-sm font-semibold text-primary-700">
-                {type.count === null ? "—" : type.count} open
-              </p>
-              <h3 className="mt-1 font-semibold text-ink-900">{type.title}</h3>
-              <p className="mt-1 text-sm text-ink-600">{type.description}</p>
+              <div className="flex items-start justify-between gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary-100 px-2.5 py-1 text-xs font-bold text-secondary-600">
+                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-logo-green" />
+                  {type.count === null ? "—" : type.count} open
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-950 transition-colors group-hover:bg-brand"
+                >
+                  <ArrowUpRightIcon className="h-4 w-4" />
+                </span>
+              </div>
+
+              <h3 className="mt-5 text-lg font-bold tracking-tight text-ink-950">{type.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-600">{type.description}</p>
             </Link>
           ))}
         </div>
       </Container>
     </section>
+  );
+}
+
+function ArrowUpRightIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
   );
 }

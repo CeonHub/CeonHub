@@ -9,7 +9,7 @@ export function CompanyCard({ company }: { company: Company }) {
         <CompanyLogo name={company.name} logoUrl={company.logoUrl ?? null} />
 
         <div className="min-w-0">
-          <h3 className="font-semibold text-ink-900">
+          <h3 className="font-bold text-ink-950">
             <Link href={`/companies/${company.slug}`} className="hover:text-primary-700">
               {company.name}
             </Link>

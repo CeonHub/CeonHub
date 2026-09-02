@@ -265,7 +265,7 @@ export function JobForm({ categories, job }: JobFormProps) {
           {FLAGS.map((flag) => (
             <label
               key={flag.name}
-              className="flex cursor-pointer items-start gap-3 rounded-md border border-ink-200 p-3 hover:bg-ink-50"
+              className="flex cursor-pointer items-start gap-3 rounded-control border border-ink-200 p-3 hover:bg-ink-50"
             >
               <input
                 type="checkbox"

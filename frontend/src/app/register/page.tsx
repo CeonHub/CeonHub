@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RegisterPage() {
   return (
     <main className="mx-auto w-full max-w-md px-4 py-16">
-      <h1 className="text-2xl font-semibold text-ink-900">Create your account</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight text-ink-950">Create your account</h1>
       <p className="mt-1 text-sm text-ink-500">
         One click with LinkedIn. You can complete your profile afterwards.
       </p>

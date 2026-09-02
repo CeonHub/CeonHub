@@ -18,7 +18,7 @@ export function Logo({ href = "/", className }: { href?: string; className?: str
   return (
     <Link
       href={href}
-      className={cn("flex shrink-0 items-center rounded-md", className)}
+      className={cn("flex shrink-0 items-center rounded-control", className)}
       aria-label="CeonHub home"
     >
       <Image src={logoMark} alt="" priority className="h-8 w-8 sm:hidden" sizes="32px" />

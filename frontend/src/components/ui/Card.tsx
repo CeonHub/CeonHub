@@ -3,7 +3,9 @@ import { cn } from "@/lib/cn";
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <div className={cn("rounded-card border border-ink-200 bg-white shadow-card", className)}>{children}</div>
+    <div className={cn("rounded-card border border-ink-200 bg-white shadow-card", className)}>
+      {children}
+    </div>
   );
 }
 
@@ -17,10 +19,10 @@ export function CardHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-ink-200 px-5 py-4">
+    <div className="flex items-start justify-between gap-4 border-b border-ink-200 px-6 py-5">
       <div>
-        <h2 className="text-base font-semibold text-ink-900">{title}</h2>
-        {description && <p className="mt-0.5 text-sm text-ink-500">{description}</p>}
+        <h2 className="text-base font-bold tracking-tight text-ink-950">{title}</h2>
+        {description && <p className="mt-1 text-sm text-ink-600">{description}</p>}
       </div>
       {action}
     </div>
@@ -28,5 +30,5 @@ export function CardHeader({
 }
 
 export function CardBody({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cn("px-5 py-4", className)}>{children}</div>;
+  return <div className={cn("px-6 py-5", className)}>{children}</div>;
 }

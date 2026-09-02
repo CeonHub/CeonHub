@@ -62,8 +62,8 @@ function EmployerJobs() {
             }}
             className={
               status === tab.value
-                ? "rounded-md border border-brand-edge bg-brand px-3 py-1.5 text-sm font-medium text-brand-fg"
-                : "rounded-md px-3 py-1.5 text-sm font-medium text-ink-600 hover:bg-ink-100"
+                ? "rounded-control border border-brand-edge bg-brand px-3 py-1.5 text-sm font-medium text-brand-fg"
+                : "rounded-control px-3 py-1.5 text-sm font-medium text-ink-600 hover:bg-ink-100"
             }
           >
             {tab.label}
