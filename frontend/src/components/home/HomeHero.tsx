@@ -13,7 +13,7 @@ export function HomeHero({ latestJobs }: { latestJobs: JobSummary[] }) {
   return (
     <section className="relative overflow-hidden bg-white">
       {/* Two very faint brand washes bled in from the corners. At 5% they read as
-          a warm cast on the white rather than as colour, which is the point —
+          a warm cast on the white rather than as colour, which is the point:
           the hero already has a green headline and an orange button in it. */}
       <div
         aria-hidden="true"
@@ -38,8 +38,8 @@ export function HomeHero({ latestJobs }: { latestJobs: JobSummary[] }) {
           </h1>
 
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-ink-700">
-            CeonHub is built for speed: immediate starts, freelance projects, side income and
-            internships across the US — plus private opportunities that never appear in public
+            CeonHub is built for speed. Immediate starts, freelance projects, side income and
+            internships across the US, plus private opportunities that never appear in public
             search.
           </p>
 
@@ -123,11 +123,19 @@ export function HomeHero({ latestJobs }: { latestJobs: JobSummary[] }) {
               <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-ink-100 text-ink-600">
                 <BriefcaseIcon className="h-5 w-5" />
               </span>
-              <p className="mt-4 font-bold text-ink-950">No jobs published yet</p>
+              <p className="mt-4 font-bold text-ink-950">No open roles right now</p>
               <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-ink-600">
-                If you are running this locally, seed the demo data with{" "}
-                <code className="font-mono text-[0.8125rem] text-primary-600">npm run db:seed</code>.
+                New opportunities appear here as soon as employers publish them. Check back
+                soon.
               </p>
+              {/* The seed hint is for whoever is running the project locally. A visitor on
+                  the deployed site must never be shown a terminal command. */}
+              {process.env.NODE_ENV !== "production" && (
+                <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-ink-500">
+                  Running this locally? Seed the demo data with{" "}
+                  <code className="font-mono text-[0.8125rem] text-primary-600">npm run db:seed</code>.
+                </p>
+              )}
             </div>
           )}
         </aside>

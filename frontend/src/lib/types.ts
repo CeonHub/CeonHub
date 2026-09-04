@@ -2,7 +2,7 @@
  * Shapes returned by the CeonHub API.
  *
  * These are maintained by hand to keep the build simple (no codegen step). They
- * mirror backend/src/modules/**\/*.service.ts — update both sides together.
+ * mirror backend/src/modules/**\/*.service.ts. Update both sides together.
  */
 
 export type Role = "CANDIDATE" | "EMPLOYER" | "ADMIN";
@@ -189,6 +189,22 @@ export interface AdminUserRow {
   status: UserStatus;
   createdAt: string;
   name: string;
+}
+
+/**
+ * GET /api/admin/companies. Unlike the public directory this includes companies
+ * with no published job, which is exactly the case staff need when posting the
+ * first one.
+ */
+export interface AdminCompanyRow {
+  id: string;
+  name: string;
+  slug: string;
+  location: string | null;
+  country: string | null;
+  createdAt: string;
+  jobCount: number;
+  publishedJobCount: number;
 }
 
 export interface AdminStats {

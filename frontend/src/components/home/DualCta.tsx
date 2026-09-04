@@ -2,10 +2,10 @@ import { Container } from "@/components/layout/Container";
 import { ButtonLink } from "@/components/ui/Button";
 
 /**
- * The two doors, given equal weight. Only the buttons differ in rank — a filled
- * one for the candidate side, an outlined one for the employer side — because
- * two filled brand buttons side by side make the reader pick a colour rather
- * than a role.
+ * The two doors, given equal weight. Only the buttons differ in rank: a filled
+ * one for the candidate side, an outlined one for the employer side. Two filled
+ * brand buttons side by side would make the reader pick a colour rather than a
+ * role.
  */
 export function DualCta() {
   return (

@@ -6,11 +6,11 @@
  * The palette is derived from the logo: a vivid green (#23e837) and a vivid
  * orange (#ff9100). Those two hues are kept as fixed ramps (green-*, orange-*),
  * generated in OKLCH so every step lands on a known contrast ratio against
- * white — 600 clears 4.5:1 for white text on a filled button, 700 clears 6:1
+ * white: 600 clears 4.5:1 for white text on a filled button, 700 clears 6:1
  * for body-size text on a light surface.
  *
  * On top of the fixed ramps sit two roles: primary-* and secondary-*. Orange
- * leads — it is the colour every call to action is painted in — and green
+ * leads (it is the colour every call to action is painted in) and green
  * supports, carrying accents, status and the one highlighted word in the hero.
  * Components reference the roles rather than the hues directly, so the two stay
  * separable: swapping them is a change to this file alone.
@@ -48,7 +48,7 @@
   --orange-950: #40180b;
 
   /* The untouched logo inks. Neither carries white text, so they are never used
-     *as* text on white — but as a filled surface with near-black type on top,
+     *as* text on white, but as a filled surface with near-black type on top,
      both clear 9:1 and are the most on-brand thing in the palette. */
   --logo-green: #23e837;
   --logo-orange: #ff9100;
@@ -57,7 +57,7 @@
   --orange-fill: var(--logo-orange);
 
   /* Both logo inks are light and highly saturated. Near-black type sits on them
-     more cleanly than a tinted dark does — a brown-on-orange or green-on-green
+     more cleanly than a tinted dark does. A brown-on-orange or green-on-green
      label reads as a print misregistration at button sizes. */
   --green-fill-fg: #10101c;
   --orange-fill-fg: #10101c;
@@ -80,8 +80,8 @@
   --ink-900: #1e1e28;
   --ink-950: #10101c;
 
-  /* The dark sections are one surface with one raised step and one hairline —
-     any more levels and the depth stops reading. */
+  /* The dark sections are one surface with one raised step and one hairline.
+     Any more levels and the depth stops reading. */
   --night: #10101c;
   --night-raised: #17172a;
   --night-line: #232336;
@@ -197,7 +197,7 @@
   --color-secondary-950: var(--secondary-950);
   --color-secondary-logo: var(--secondary-logo);
 
-  /* Meaning, not decoration — these stay put when the roles flip. */
+  /* Meaning, not decoration. These stay put when the roles flip. */
   --color-available-50: var(--green-50);
   --color-available-100: var(--green-100);
   --color-available-600: var(--green-600);
@@ -255,7 +255,7 @@
   --radius-panel: 1.25rem;
 
   /* Elevation is carried by a wide, very soft ambient shadow rather than a hard
-     drop — at these radii a tight shadow just makes the corners look dirty. */
+     drop, because at these radii a tight shadow just makes the corners look dirty. */
   --shadow-card: 0 1px 2px 0 rgb(16 16 28 / 0.04), 0 4px 12px -4px rgb(16 16 28 / 0.06);
   --shadow-lift: 0 2px 4px 0 rgb(16 16 28 / 0.05), 0 12px 28px -8px rgb(16 16 28 / 0.12);
   --shadow-control: 0 1px 2px 0 rgb(16 16 28 / 0.08);
@@ -294,8 +294,8 @@
 
   /**
    * Headings are set tight and heavy. The tracking is negative and grows with
-   * size, because the optical gaps in a geometric face open up as it scales —
-   * the display sizes need roughly twice the correction of a card title.
+   * size, because the optical gaps in a geometric face open up as it scales. The
+   * display sizes need roughly twice the correction of a card title.
    */
   h1,
   h2,

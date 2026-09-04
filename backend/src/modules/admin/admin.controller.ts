@@ -3,6 +3,7 @@ import { currentUser } from "../../middleware/auth";
 import { pathParam } from "../../utils/request";
 import { sendSuccess } from "../../utils/response";
 import {
+  listAdminCompaniesSchema,
   listAdminJobsSchema,
   listUsersSchema,
   updateJobStatusSchema,
@@ -28,6 +29,10 @@ export const setJobStatus: RequestHandler = async (req, res) => {
   const { status } = updateJobStatusSchema.parse(req.body);
   const job = await adminService.setJobStatus(currentUser(req), pathParam(req, "id"), status);
   sendSuccess(res, { job });
+};
+
+export const listCompanies: RequestHandler = async (req, res) => {
+  sendSuccess(res, await adminService.listCompanies(listAdminCompaniesSchema.parse(req.query)));
 };
 
 export const stats: RequestHandler = async (_req, res) => {

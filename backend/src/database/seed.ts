@@ -2,7 +2,7 @@
  * Demo data for local development and for trying the product out.
  *
  * Everything here is invented: no real people, companies or contact details. The
- * script is idempotent — it clears the tables it owns before inserting, so it can
+ * script is idempotent: it clears the tables it owns before inserting, so it can
  * be run repeatedly.
  *
  *   npm run db:seed            (development, via tsx)
@@ -38,7 +38,7 @@ const COMPANIES = [
   {
     name: "Northwind Logistics",
     description:
-      "A regional logistics operator moving goods across the Midwest and the East Coast. We hire quickly and we hire often — warehouse teams, drivers and the people who keep the software running.",
+      "A regional logistics operator moving goods across the Midwest and the East Coast. We hire quickly and we hire often: warehouse teams, drivers and the people who keep the software running.",
     website: "https://example.com/northwind",
     location: "Columbus, OH",
     country: "United States",
@@ -53,11 +53,72 @@ const COMPANIES = [
   },
 ];
 
+/**
+ * CeonHub's own company row, which is what the careers page reads. The slug
+ * derived from this name ("ceonhub") has to match the frontend's
+ * NEXT_PUBLIC_CAREERS_COMPANY_SLUG, or /careers finds nothing.
+ *
+ * Unlike the demo companies it has no employer profile attached: its jobs are
+ * posted by staff from the admin console, which is exactly the flow an admin
+ * uses in production.
+ */
+const CEONHUB_COMPANY = {
+  name: "CeonHub",
+  description:
+    "CeonHub is the hiring and work marketplace this site runs on. We are a small team building it in the open: the public job index, the private hiring flow, and the tooling behind both.",
+  website: "https://www.ceonhub.net",
+  location: "Remote, United States",
+  country: "United States",
+};
+
+const CEONHUB_JOBS: Array<Omit<JobSeed, "companyIndex">> = [
+  {
+    title: "Full-stack Engineer",
+    description:
+      "We are looking for a full-stack engineer to work across the CeonHub product: the Next.js frontend, the Express and Prisma API, and the Postgres schema underneath.\n\nYou would own features end to end, from the database columns to the empty states. The codebase is small and deliberately boring, and we intend to keep it that way.\n\nWe work remotely across US time zones with a few hours of overlap each day.",
+    category: "Engineering",
+    employmentType: "FULL_TIME",
+    location: "Remote, United States",
+    remote: true,
+    compensation: "$120,000 to $150,000 / year",
+    currency: "USD",
+    status: "PUBLISHED",
+    skills: ["TypeScript", "Node.js", "React", "PostgreSQL"],
+  },
+  {
+    title: "Product Designer",
+    description:
+      "CeonHub is a product where the interface is most of the product. We need a designer to take it from workable to genuinely good.\n\nThe work covers the job search and application flows, the employer console, and the design system that holds them together. You would be the first designer here, so you would set how design and engineering work together.\n\nA portfolio matters more than a CV.",
+    category: "Design",
+    employmentType: "FULL_TIME",
+    location: "Remote, United States",
+    remote: true,
+    compensation: "$100,000 to $130,000 / year",
+    currency: "USD",
+    status: "PUBLISHED",
+    skills: ["Product Design", "Design Systems", "Figma"],
+  },
+  {
+    title: "Customer Support Specialist (part-time)",
+    description:
+      "Employers and candidates write to us when something is confusing or broken, and the answers they get shape whether they come back.\n\nYou would handle that inbox, spot the questions that keep repeating, and tell the team which ones are really product problems.\n\nAround 20 hours a week, with hours you choose inside US business time.",
+    category: "Customer Support",
+    employmentType: "PART_TIME",
+    location: "Remote, United States",
+    remote: true,
+    compensation: "$28 to $34 / hour",
+    currency: "USD",
+    status: "PUBLISHED",
+    sideIncome: true,
+    skills: ["Customer Support", "Technical Writing"],
+  },
+];
+
 const CANDIDATES = [
   {
     email: "ana.candidate@example.com",
     name: "Ana Ferreira",
-    headline: "Frontend developer — React & TypeScript",
+    headline: "Frontend developer, React and TypeScript",
     bio: "Six years building interfaces for small product teams. I like getting a first version in front of users quickly, then making it solid.",
     location: "Austin, TX",
     country: "United States",
@@ -81,7 +142,7 @@ const CANDIDATES = [
   {
     email: "chidi.candidate@example.com",
     name: "Chidi Okafor",
-    headline: "Backend engineer — Node.js, PostgreSQL",
+    headline: "Backend engineer, Node.js and PostgreSQL",
     bio: "I build APIs that stay boring under load. Currently interested in contract work alongside my studies.",
     location: "Chicago, IL",
     country: "United States",
@@ -105,7 +166,7 @@ const CANDIDATES = [
   {
     email: "emre.candidate@example.com",
     name: "Emre Yilmaz",
-    headline: "Delivery driver — evenings and weekends",
+    headline: "Delivery driver, evenings and weekends",
     bio: "Looking for side income around my main job. Clean driving record, own vehicle, familiar with the city.",
     location: "Phoenix, AZ",
     country: "United States",
@@ -118,9 +179,9 @@ const CANDIDATES = [
 
 const JOBS: JobSeed[] = [
   {
-    title: "Warehouse Assistant — immediate start",
+    title: "Warehouse Assistant (immediate start)",
     description:
-      "We need two warehouse assistants to start this week at our Columbus site.\n\nYou will pick and pack orders, keep the aisles tidy and help load vans in the morning. Previous warehouse experience is welcome but not required — we train on the first day.\n\nShifts are Monday through Friday, 7:00am–3:30pm, with occasional Saturday overtime paid at a higher rate.",
+      "We need two warehouse assistants to start this week at our Columbus site.\n\nYou will pick and pack orders, keep the aisles tidy and help load vans in the morning. Previous warehouse experience is welcome but not required, and we train on the first day.\n\nShifts are Monday through Friday, 7:00am–3:30pm, with occasional Saturday overtime paid at a higher rate.",
     category: "Logistics & Delivery",
     employmentType: "FULL_TIME",
     location: "Columbus, OH",
@@ -164,7 +225,7 @@ const JOBS: JobSeed[] = [
     companyIndex: 0,
   },
   {
-    title: "Backend Engineer — Node.js",
+    title: "Backend Engineer, Node.js",
     description:
       "Our internal tooling runs on a Node.js and PostgreSQL stack, and it is starting to creak. We are looking for an engineer who enjoys tidying that kind of thing up: clearer boundaries, fewer moving parts, better tests.\n\nYou will work with two other engineers and talk directly to the operations team who use what we build.",
     category: "Engineering",
@@ -192,7 +253,7 @@ const JOBS: JobSeed[] = [
     companyIndex: 0,
   },
   {
-    title: "Freelance Frontend Developer — React",
+    title: "Freelance Frontend Developer, React",
     description:
       "We have a three-month client project starting shortly: a customer dashboard in React and TypeScript, designs already done.\n\nYou would work alongside one of our backend developers and a designer, roughly three days a week. Remote is fine if you can overlap with Central time.",
     category: "Engineering",
@@ -222,7 +283,7 @@ const JOBS: JobSeed[] = [
     companyIndex: 1,
   },
   {
-    title: "Content Writer — freelance, per article",
+    title: "Content Writer, freelance and per article",
     description:
       "We need a writer for our clients' product blogs: clear explanatory pieces, 800–1,200 words, one or two a week. Technical subjects, non-technical readers.\n\nPaid per accepted article. A good fit as side income for someone already writing.",
     category: "Writing & Content",
@@ -238,7 +299,7 @@ const JOBS: JobSeed[] = [
     companyIndex: 1,
   },
   {
-    title: "Marketing Internship — summer",
+    title: "Summer Marketing Internship",
     description:
       "A summer internship with our marketing team: newsletters, social accounts, and helping run one client campaign end to end. You will present what you learned to the whole studio in the final week.",
     category: "Marketing",
@@ -253,7 +314,7 @@ const JOBS: JobSeed[] = [
     companyIndex: 1,
   },
   {
-    title: "Lead Engineer — confidential replacement hire",
+    title: "Lead Engineer (confidential replacement hire)",
     description:
       "A private opportunity: we are quietly looking for a lead engineer before announcing the role publicly. You would own the technical direction of two client teams and mentor three engineers.\n\nBecause this is a replacement hire, we are only approaching candidates directly.",
     category: "Engineering",
@@ -342,6 +403,7 @@ async function main(): Promise<void> {
   const skillMap = await upsertSkills([
     ...CANDIDATES.flatMap((candidate) => candidate.skills),
     ...JOBS.flatMap((job) => job.skills),
+    ...CEONHUB_JOBS.flatMap((job) => job.skills),
     "Operations",
     "Content Strategy",
     "Product Design",
@@ -425,6 +487,50 @@ async function main(): Promise<void> {
     }),
   );
 
+  // CeonHub's own company and roles, which is what /careers renders. Posted by
+  // the admin account, so the seed exercises the same path the admin console does.
+  const ceonhub = await prisma.company.create({
+    data: { ...CEONHUB_COMPANY, slug: slugify(CEONHUB_COMPANY.name) },
+    select: { id: true, slug: true },
+  });
+
+  const ceonhubJobs = await Promise.all(
+    CEONHUB_JOBS.map(async (job) => {
+      const created = await prisma.job.create({
+        data: {
+          title: job.title,
+          description: job.description,
+          category: job.category,
+          employmentType: job.employmentType,
+          location: job.location,
+          remote: job.remote,
+          compensation: job.compensation,
+          currency: job.currency,
+          status: job.status,
+          immediateHire: job.immediateHire ?? false,
+          private: job.private ?? false,
+          internship: job.internship ?? false,
+          freelance: job.freelance ?? false,
+          sideIncome: job.sideIncome ?? false,
+          publishedAt: job.status === "PUBLISHED" ? new Date() : null,
+          companyId: ceonhub.id,
+          createdBy: admin.id,
+        },
+        select: { id: true },
+      });
+
+      await prisma.jobSkill.createMany({
+        data: job.skills
+          .map((name) => skillMap.get(name))
+          .filter((id): id is string => Boolean(id))
+          .map((skillId) => ({ jobId: created.id, skillId })),
+        skipDuplicates: true,
+      });
+
+      return created;
+    }),
+  );
+
   // A handful of applications across both companies, in different stages.
   const applicationPlan: Array<{ job: number; candidate: number; status: JobStatus | string }> = [
     { job: 0, candidate: 1, status: "SHORTLISTED" },
@@ -458,14 +564,14 @@ async function main(): Promise<void> {
       employer: 1,
       candidate: 2,
       message:
-        "We are replacing our lead engineer and are approaching a small number of people directly. Your backend experience looks like a strong match — would you like to hear more?",
+        "We are replacing our lead engineer and are approaching a small number of people directly. Your backend experience looks like a strong match. Would you like to hear more?",
     },
     {
       job: 5,
       employer: 1,
       candidate: 0,
       message:
-        "Your portfolio matches a client dashboard we are starting this month. Three days a week, mostly remote — interested?",
+        "Your portfolio matches a client dashboard we are starting this month. Three days a week, mostly remote. Interested?",
     },
     {
       job: 0,
@@ -497,7 +603,10 @@ async function main(): Promise<void> {
       action: "seed.completed",
       entityType: "USER",
       entityId: admin.id,
-      metadata: { jobs: jobs.length, candidates: candidates.length },
+      metadata: {
+        jobs: jobs.length + ceonhubJobs.length,
+        candidates: candidates.length,
+      },
     },
   });
 
@@ -506,15 +615,19 @@ async function main(): Promise<void> {
       "",
       "Seed complete.",
       "",
-      `  ${companies.length} companies · ${jobs.length} jobs · ${candidates.length} candidates · ` +
-        `${applicationPlan.length} applications · ${invitationPlan.length} invitations`,
+      `  ${companies.length + 1} companies · ${jobs.length + ceonhubJobs.length} jobs · ` +
+        `${candidates.length} candidates · ${applicationPlan.length} applications · ` +
+        `${invitationPlan.length} invitations`,
       "",
       "  Sign in as staff:",
       `    admin@ceonhub.net / ${DEMO_PASSWORD}       →  /admin/login`,
       "",
+      `  CeonHub's own ${ceonhubJobs.length} roles are live at /careers, posted by that admin`,
+      "  account. Post, edit and close more of them from /admin/jobs.",
+      "",
       "  The demo candidates and employers have no password, because CeonHub accounts",
       "  are created with LinkedIn. Their data fills the public site and the admin",
-      "  console, but you cannot sign in as them — use your own LinkedIn account for",
+      "  console, but you cannot sign in as them. Use your own LinkedIn account for",
       "  the candidate and employer flows.",
       "",
     ].join("\n"),

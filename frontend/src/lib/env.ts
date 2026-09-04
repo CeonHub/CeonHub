@@ -1,5 +1,5 @@
 /**
- * Frontend configuration. Only NEXT_PUBLIC_* variables exist here — the browser
+ * Frontend configuration. Only NEXT_PUBLIC_* variables exist here: the browser
  * bundle must never contain a secret, and the frontend never talks to the database.
  *
  * References to process.env are written out in full because Next.js inlines them
@@ -28,9 +28,17 @@ export const SITE_URL = required(
 );
 
 /**
- * The email domain staff accounts must use. Display only — the API is what
- * enforces it — but this has to agree with the backend's ADMIN_EMAIL_DOMAIN, or
- * the sign-up form promises a domain the API then refuses.
+ * The email domain staff accounts must use. This is display only, since the API
+ * is what enforces it, but it has to agree with the backend's ADMIN_EMAIL_DOMAIN,
+ * or the sign-up form promises a domain the API then refuses.
  */
 export const ADMIN_EMAIL_DOMAIN =
   process.env.NEXT_PUBLIC_ADMIN_EMAIL_DOMAIN?.trim() || "ceonhub.net";
+
+/**
+ * The company whose jobs /careers shows: CeonHub's own. It is an ordinary company
+ * row, created from the admin console, so the careers page is the public job list
+ * filtered to one slug rather than a second job system.
+ */
+export const CAREERS_COMPANY_SLUG =
+  process.env.NEXT_PUBLIC_CAREERS_COMPANY_SLUG?.trim() || "ceonhub";

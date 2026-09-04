@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "About CeonHub",
   description:
-    "CeonHub is a US hiring and work marketplace focused on speed: immediate hiring, freelance and side income work, internships and private employer–candidate connections across the United States.",
+    "CeonHub is a US hiring and work marketplace focused on speed: immediate hiring, freelance and side income work, internships and private employer and candidate connections across the United States.",
   alternates: { canonical: "/about" },
 };
 
@@ -23,7 +23,7 @@ export default function AboutPage() {
           </p>
           <p>
             CeonHub is built for the other case. It connects US employers who need people quickly
-            with candidates who want work quickly — immediate starts, freelance projects, side
+            with candidates who want work quickly: immediate starts, freelance projects, side
             income and internships, alongside conventional full-time roles.
           </p>
 
@@ -31,7 +31,7 @@ export default function AboutPage() {
           <p>
             CeonHub is a United States marketplace. Employers post roles based in the US,
             candidates are looking for work in the US, and pay is quoted in US dollars. Remote
-            roles are common and welcome — they are remote <em>within</em> the US rather than open
+            roles are common and welcome. They are remote <em>within</em> the US rather than open
             worldwide, so time zones overlap and the paperwork is one country&rsquo;s.
           </p>
 
@@ -58,7 +58,7 @@ export default function AboutPage() {
           <h2 className="pt-4 text-xl font-extrabold tracking-tight text-ink-950">Where it is going</h2>
           <p>
             This is an early version, deliberately small. The focus is on making the core loop work
-            reliably: post a job, find it, apply, review, hire — plus private invitations. Payments,
+            reliably: post a job, find it, apply, review, hire, plus private invitations. Payments,
             messaging, referrals and recruiting services are possible later, but nothing is built
             until the basics are solid.
           </p>
@@ -68,6 +68,9 @@ export default function AboutPage() {
           <ButtonLink href="/jobs">Find jobs</ButtonLink>
           <ButtonLink href="/register?role=EMPLOYER" variant="secondary">
             Hire talent
+          </ButtonLink>
+          <ButtonLink href="/careers" variant="secondary">
+            Work at CeonHub
           </ButtonLink>
         </div>
       </Container>

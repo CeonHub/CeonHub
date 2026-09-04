@@ -45,7 +45,7 @@ const FLAGS: Array<{ name: keyof JobFormValues; label: string; description: stri
   {
     name: "private",
     label: "Private opportunity",
-    description: "Hidden from public search — only invited candidates can see and apply.",
+    description: "Hidden from public search. Only invited candidates can see and apply.",
   },
 ];
 
@@ -73,14 +73,30 @@ interface JobFormProps {
   categories: string[];
   /** Omitted when creating a new job. */
   job?: Job;
+  /**
+   * Admins only. Staff have no company of their own, so a new job needs one
+   * named explicitly; employers always post under theirs and never see this.
+   */
+  companies?: Array<{ id: string; name: string }>;
+  /** Where a newly created job is opened. The employer console by default. */
+  manageBasePath?: string;
 }
 
-export function JobForm({ categories, job }: JobFormProps) {
+export function JobForm({
+  categories,
+  job,
+  companies,
+  manageBasePath = "/employer/jobs",
+}: JobFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<JobFormValues>(() => toValues(job));
+  const [companyId, setCompanyId] = useState(() => companies?.[0]?.id ?? "");
   const [error, setError] = useState<Error | null>(null);
   const [saved, setSaved] = useState(false);
   const [pending, setPending] = useState<"draft" | "publish" | null>(null);
+
+  // The company is fixed once the job exists, so the picker is only for creation.
+  const showCompanyPicker = companies !== undefined && job === undefined;
 
   function update<K extends keyof JobFormValues>(field: K, value: JobFormValues[K]) {
     setValues((current) => ({ ...current, [field]: value }));
@@ -96,6 +112,7 @@ export function JobForm({ categories, job }: JobFormProps) {
     const body = {
       ...values,
       expiresAt: values.expiresAt ? new Date(values.expiresAt).toISOString() : null,
+      ...(showCompanyPicker ? { companyId } : {}),
       ...(job
         ? intent === "publish"
           ? { status: "PUBLISHED" as const }
@@ -113,7 +130,7 @@ export function JobForm({ categories, job }: JobFormProps) {
         setSaved(true);
         router.refresh();
       } else {
-        router.push(`/employer/jobs/${result.job.id}`);
+        router.push(`${manageBasePath}/${result.job.id}`);
       }
     } catch (caught) {
       setError(caught instanceof Error ? caught : new Error(errorMessage(caught)));
@@ -133,6 +150,36 @@ export function JobForm({ categories, job }: JobFormProps) {
       <Card>
         <CardHeader title="The role" />
         <CardBody className="space-y-5">
+          {showCompanyPicker && (
+            <Field
+              htmlFor="companyId"
+              label="Company"
+              hint="The job is published under this company and appears on its profile."
+              error={fieldError("companyId")}
+              required
+            >
+              <Select
+                id="companyId"
+                placeholder={companies.length === 0 ? "No companies yet" : undefined}
+                options={companies.map((company) => ({
+                  value: company.id,
+                  label: company.name,
+                }))}
+                value={companyId}
+                error={fieldError("companyId")}
+                onChange={(event) => setCompanyId(event.target.value)}
+                required
+              />
+            </Field>
+          )}
+
+          {/* Only staff need telling: an employer has exactly one company. */}
+          {job && companies !== undefined && (
+            <p className="text-sm text-ink-600">
+              Posted under <span className="font-semibold text-ink-900">{job.company.name}</span>.
+            </p>
+          )}
+
           <Field htmlFor="title" label="Job title" error={fieldError("title")} required>
             <Input
               id="title"

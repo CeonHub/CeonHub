@@ -13,7 +13,7 @@ import { useApiQuery } from "@/lib/useApiQuery";
 
 /**
  * The private hiring flow: pick one of your own jobs, add a message, send.
- * Private jobs are the point of this — they never appear in public search.
+ * Private jobs are the point of this: they never appear in public search.
  */
 export function InviteCandidateModal({
   candidate,
@@ -85,8 +85,8 @@ function InviteForm({ candidate, onClose }: { candidate: CandidateSummary; onClo
         <p className="text-sm text-ink-500">Loading your jobs…</p>
       ) : invitableJobs.length === 0 ? (
         <Alert tone="info">
-          You have no jobs to invite to yet. Create a job first — tick “Private opportunity” to keep
-          it out of public search.
+          You have no jobs to invite to yet. Create a job first, then tick “Private opportunity”
+          to keep it out of public search.
         </Alert>
       ) : (
         <>

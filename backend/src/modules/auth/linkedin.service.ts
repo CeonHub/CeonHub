@@ -33,7 +33,7 @@ interface StatePayload {
 }
 
 export interface LinkedInProfile {
-  /** OpenID Connect subject identifier — stable per member, per application. */
+  /** OpenID Connect subject identifier, stable per member, per application. */
   sub: string;
   name?: string;
   givenName?: string;
@@ -142,7 +142,7 @@ interface UserInfoResponse {
   email_verified?: boolean;
 }
 
-/** Reads the member's profile. `email` is documented as optional — handle its absence. */
+/** Reads the member's profile. `email` is documented as optional, so handle its absence. */
 export async function fetchLinkedInProfile(accessToken: string): Promise<LinkedInProfile> {
   const response = await fetch(USERINFO_URL, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -183,7 +183,7 @@ function displayName(profile: LinkedInProfile): string {
  * Matching order:
  *  1. an account already linked to this LinkedIn member;
  *  2. an existing account with the same address, but only if LinkedIn says the
- *     address is verified — otherwise anyone able to set an unverified address on
+ *     address is verified. Otherwise anyone able to set an unverified address on
  *     LinkedIn could take over a CeonHub account;
  *  3. a new account, which needs to know whether it is a candidate or an employer.
  */

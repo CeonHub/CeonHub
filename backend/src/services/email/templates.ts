@@ -6,7 +6,7 @@ import type { EmailMessage } from "./email.types";
  * in one place and easy to change.
  */
 
-const SIGN_OFF = "\n\n— The CeonHub team";
+const SIGN_OFF = "\n\nThe CeonHub team";
 
 export function welcomeEmail(to: string, name: string, role: "CANDIDATE" | "EMPLOYER"): EmailMessage {
   const next =

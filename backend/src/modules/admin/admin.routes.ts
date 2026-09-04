@@ -13,3 +13,4 @@ adminRouter.get("/users", controller.listUsers);
 adminRouter.patch("/users/:id/status", controller.setUserStatus);
 adminRouter.get("/jobs", controller.listJobs);
 adminRouter.patch("/jobs/:id/status", controller.setJobStatus);
+adminRouter.get("/companies", controller.listCompanies);

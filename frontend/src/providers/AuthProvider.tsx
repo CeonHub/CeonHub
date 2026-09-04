@@ -16,7 +16,7 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<SessionUser>;
   /**
    * Staff sign-up. The API only accepts addresses on the CeonHub staff domain and
-   * always creates an ADMIN — the role is never sent from here.
+   * always creates an ADMIN. The role is never sent from here.
    */
   registerAdmin: (email: string, password: string) => Promise<SessionUser>;
   logout: () => Promise<void>;

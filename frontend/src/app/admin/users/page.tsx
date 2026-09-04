@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AdminUsersScreen } from "./AdminUsersScreen";
 
 export const metadata: Metadata = {
-  title: "Admin — users",
+  title: "Admin users",
   description: "View and manage CeonHub user accounts.",
   robots: { index: false },
 };

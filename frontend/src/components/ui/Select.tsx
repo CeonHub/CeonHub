@@ -10,7 +10,7 @@ export interface SelectOption {
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   id: string;
   options: SelectOption[];
-  /** Shown as the first, empty option — omit for a select that always has a value. */
+  /** Shown as the first, empty option. Omit for a select that always has a value. */
   placeholder?: string;
   error?: string | boolean;
 }

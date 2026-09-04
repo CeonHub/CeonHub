@@ -179,7 +179,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
                 <EmptyState
                   className="border-0"
                   title="No applications yet"
-                  description="Find a role and apply — most employers reply within a few days."
+                  description="Find a role and apply. Most employers reply within a few days."
                   action={<ButtonLink href="/jobs">Browse jobs</ButtonLink>}
                 />
               )}
@@ -206,7 +206,7 @@ function CandidateDashboard({ user }: { user: SessionUser }) {
             ))}
           </div>
         ) : (
-          <EmptyState title="No jobs published yet" />
+          <EmptyState title="No open roles right now" />
         )}
       </section>
     </>

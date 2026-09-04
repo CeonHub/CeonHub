@@ -57,7 +57,7 @@ const envSchema = z.object({
   /**
    * Cloudinary, used when STORAGE_DRIVER=cloudinary. Either set CLOUDINARY_URL
    * (the "API environment variable" the Cloudinary dashboard hands you) or the
-   * three fields separately — see the refinement below, which refuses to start
+   * three fields separately. See the refinement below, which refuses to start
    * with a cloudinary driver and no credentials.
    */
   CLOUDINARY_URL: z.string().min(1).optional(),
@@ -80,7 +80,7 @@ export type Env = z.infer<typeof envSchema>;
 /**
  * A hosting dashboard sends a variable you left blank as an empty string rather than
  * omitting it. Without this, a blank optional field fails validation and the process
- * refuses to boot — and, worse, an empty LINKEDIN_CLIENT_ID would crash instead of
+ * refuses to boot, and worse, an empty LINKEDIN_CLIENT_ID would crash instead of
  * switching the feature off the way `linkedin.enabled` intends. Blank means absent.
  */
 function withoutBlanks(source: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
@@ -129,7 +129,7 @@ export const corsOrigins = env.CORS_ORIGIN.split(",")
 
 /**
  * LinkedIn configuration, resolved once. `enabled` is the single switch the rest of
- * the app checks — no other file reads the LinkedIn variables directly.
+ * the app checks. No other file reads the LinkedIn variables directly.
  */
 export const linkedin = {
   enabled: Boolean(env.LINKEDIN_CLIENT_ID && env.LINKEDIN_CLIENT_SECRET),
@@ -143,7 +143,7 @@ export const linkedin = {
  * the single CLOUDINARY_URL ("cloudinary://key:secret@cloud-name") or the three
  * fields spelled out. Resolved once, here, so no other file parses them.
  *
- * Missing credentials are only fatal when the driver is actually cloudinary — a
+ * Missing credentials are only fatal when the driver is actually cloudinary. A
  * local development setup should not need a Cloudinary account to boot.
  */
 function loadCloudinary() {

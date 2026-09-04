@@ -9,23 +9,23 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "CeonHub — Find work. Hire talent. Connect privately.",
+    default: "CeonHub: Find work. Hire talent. Connect privately.",
     template: "%s | CeonHub",
   },
   description:
-    "CeonHub is a US hiring and work marketplace for immediate hiring, freelance and side income work, internships, and private employer–candidate connections across the United States.",
+    "CeonHub is a US hiring and work marketplace for immediate hiring, freelance and side income work, internships, and private employer and candidate connections across the United States.",
   applicationName: "CeonHub",
   openGraph: {
     type: "website",
     siteName: "CeonHub",
-    title: "CeonHub — Find work. Hire talent. Connect privately.",
+    title: "CeonHub: Find work. Hire talent. Connect privately.",
     description:
-      "Immediate hiring, freelance and side-income work, internships, and private opportunities across the US — with direct employer and candidate connections.",
+      "Immediate hiring, freelance and side-income work, internships, and private opportunities across the US, with direct employer and candidate connections.",
     url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
-    title: "CeonHub — Find work. Hire talent. Connect privately.",
+    title: "CeonHub: Find work. Hire talent. Connect privately.",
     description:
       "Immediate hiring, freelance and side-income work, internships, and private opportunities across the US.",
   },

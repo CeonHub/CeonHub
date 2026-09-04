@@ -297,3 +297,67 @@ describe("job management", () => {
     await admin.agent.patch(`/api/jobs/${job.id}`).send({ status: "PUBLISHED" }).expect(200);
   });
 });
+
+describe("partial job updates", () => {
+  it("leaves flags it was not asked to change alone, so a private job stays private", async () => {
+    const employer = await createEmployerWithCompany();
+    const job = await postJob(employer, {
+      title: "Confidential Role",
+      status: "PUBLISHED",
+      private: true,
+      immediateHire: true,
+      remote: true,
+    });
+
+    // Renaming says nothing about the flags, so none of them may move.
+    const renamed = await employer.agent
+      .patch(`/api/jobs/${job.id}`)
+      .send({ title: "Confidential Role (renamed)" })
+      .expect(200);
+
+    expect(renamed.body.data.job).toMatchObject({
+      title: "Confidential Role (renamed)",
+      private: true,
+      immediateHire: true,
+      remote: true,
+    });
+
+    // The flags surviving is the point: a private job must not enter public search.
+    const search = await api().get("/api/jobs?q=Confidential").expect(200);
+    expect(search.body.data.items).toHaveLength(0);
+  });
+
+  it("leaves flags alone when only the status changes", async () => {
+    const employer = await createEmployerWithCompany();
+    const job = await postJob(employer, {
+      status: "PUBLISHED",
+      private: true,
+      sideIncome: true,
+    });
+
+    const paused = await employer.agent
+      .patch(`/api/jobs/${job.id}`)
+      .send({ status: "PAUSED" })
+      .expect(200);
+
+    expect(paused.body.data.job).toMatchObject({
+      status: "PAUSED",
+      private: true,
+      sideIncome: true,
+    });
+  });
+
+  it("still turns a flag off when asked to explicitly", async () => {
+    const employer = await createEmployerWithCompany();
+    const job = await postJob(employer, { status: "PUBLISHED", private: true });
+
+    const opened = await employer.agent
+      .patch(`/api/jobs/${job.id}`)
+      .send({ private: false })
+      .expect(200);
+    expect(opened.body.data.job.private).toBe(false);
+
+    const search = await api().get("/api/jobs").expect(200);
+    expect(search.body.data.items).toHaveLength(1);
+  });
+});

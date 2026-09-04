@@ -25,7 +25,7 @@ const FAQ = [
   {
     question: "What does accepting an invitation do?",
     answer:
-      "Accepting files an application to that job, so you appear in the employer's applicant list and can follow the status like any other application. Declining does nothing else — the employer simply sees your answer.",
+      "Accepting files an application to that job, so you appear in the employer's applicant list and can follow the status like any other application. Declining does nothing else: the employer simply sees your answer.",
   },
   {
     question: "Does it cost anything?",

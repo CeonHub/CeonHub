@@ -1,5 +1,6 @@
 import { prisma } from "../../database/prisma";
 import { ApiError } from "../../utils/apiError";
+import { recordAudit } from "../../utils/audit";
 import { toSkipTake } from "../../utils/pagination";
 import { paginated, type PaginatedData } from "../../utils/response";
 import { resolveSkills, type SkillDto } from "../skills/skills.service";
@@ -117,6 +118,25 @@ async function employerCompanyId(userId: string): Promise<string> {
     throw ApiError.badRequest("Create your company profile before posting jobs");
   }
   return profile.companyId;
+}
+
+/**
+ * The company a new job is filed under. An employer always posts under their own,
+ * whatever the request body says. An admin has no employer profile, so they name
+ * the company instead — that is how CeonHub's own roles get posted.
+ */
+async function companyIdForNewJob(user: AuthUser, requested: string | undefined): Promise<string> {
+  if (user.role !== "ADMIN") return employerCompanyId(user.id);
+
+  if (!requested) throw ApiError.badRequest("Choose the company this job is posted under");
+
+  const company = await prisma.company.findUnique({
+    where: { id: requested },
+    select: { id: true },
+  });
+  if (!company) throw ApiError.notFound("Company not found");
+
+  return company.id;
 }
 
 /** Employers manage the jobs of their own company; admins manage everything. */
@@ -239,8 +259,8 @@ export async function getJob(viewer: AuthUser | null, jobId: string): Promise<Jo
 }
 
 export async function createJob(user: AuthUser, input: CreateJobInput): Promise<JobDto> {
-  const companyId = await employerCompanyId(user.id);
-  const { skills, status, expiresAt, ...fields } = input;
+  const { skills, status, expiresAt, companyId: requestedCompanyId, ...fields } = input;
+  const companyId = await companyIdForNewJob(user, requestedCompanyId);
   // Resolved before the transaction: Skill rows are shared reference data.
   const resolved = skills?.length ? await resolveSkills(skills) : null;
 
@@ -266,6 +286,19 @@ export async function createJob(user: AuthUser, input: CreateJobInput): Promise<
 
     return created;
   });
+
+  // Staff posting on a company's behalf is a privileged action, so it is logged
+  // the same way the other admin actions are. Employers posting their own jobs
+  // are ordinary product use and are not.
+  if (user.role === "ADMIN") {
+    await recordAudit({
+      actorId: user.id,
+      action: "job.created",
+      entityType: "JOB",
+      entityId: job.id,
+      metadata: { companyId, status },
+    });
+  }
 
   return getJob(user, job.id);
 }
@@ -305,6 +338,23 @@ export async function updateJob(
     }
   });
 
+  if (user.role === "ADMIN") {
+    await recordAudit({
+      actorId: user.id,
+      action: "job.updated",
+      entityType: "JOB",
+      entityId: jobId,
+      // The fields, not their values: a description runs to 20k characters and the
+      // log is for answering "who touched this", not for storing a second copy.
+      metadata: {
+        fields: Object.entries(input)
+          .filter(([, value]) => value !== undefined)
+          .map(([field]) => field),
+        ...(status ? { status } : {}),
+      },
+    });
+  }
+
   return getJob(user, jobId);
 }
 
@@ -322,7 +372,20 @@ export async function deleteJob(user: AuthUser, jobId: string): Promise<void> {
     );
   }
 
-  await prisma.job.delete({ where: { id: jobId } });
+  const job = await prisma.job.delete({
+    where: { id: jobId },
+    select: { title: true, companyId: true },
+  });
+
+  if (user.role === "ADMIN") {
+    await recordAudit({
+      actorId: user.id,
+      action: "job.deleted",
+      entityType: "JOB",
+      entityId: jobId,
+      metadata: { title: job.title, companyId: job.companyId },
+    });
+  }
 }
 
 /** Every job belonging to the employer's company, in any status. */

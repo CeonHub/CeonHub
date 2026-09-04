@@ -8,7 +8,7 @@ import type { SaveFileInput, StorageService, StoredFile } from "./storage.types"
 /**
  * Development / single-server driver: files live under STORAGE_LOCAL_DIR and are
  * served by the API at /uploads. Containers must mount that directory as a volume,
- * otherwise uploads disappear on redeploy — which is why production should use an
+ * otherwise uploads disappear on redeploy, which is why production should use an
  * object-storage driver (docs/architecture.md, "Storage").
  */
 export class LocalStorageService implements StorageService {

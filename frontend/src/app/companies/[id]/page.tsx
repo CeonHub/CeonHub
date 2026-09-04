@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     `See open roles at ${company.name} on CeonHub.`;
 
   return {
-    title: `${company.name} — jobs and company profile`,
+    title: `${company.name} jobs and company profile`,
     description,
     alternates: { canonical: `/companies/${company.slug}` },
     openGraph: { type: "profile", title: company.name, description },

@@ -128,7 +128,7 @@ function CompanyForm({ company, onSaved }: { company: Company | null; onSaved: (
       {saved && <Alert tone="success">Company profile saved.</Alert>}
       {!company && (
         <Alert tone="info">
-          Create your company profile first — it is required before you can publish a job.
+          Create your company profile first. It is required before you can publish a job.
         </Alert>
       )}
 

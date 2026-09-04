@@ -115,7 +115,7 @@ function PageControl({
   );
 }
 
-/** First, last, current and its neighbours — with gaps in between. */
+/** First, last, current and its neighbours, with gaps in between. */
 function pageWindow(page: number, totalPages: number): Array<number | "gap"> {
   const pages = new Set<number>([1, totalPages, page, page - 1, page + 1]);
   const sorted = [...pages].filter((value) => value >= 1 && value <= totalPages).sort((a, b) => a - b);

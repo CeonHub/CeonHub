@@ -6,7 +6,7 @@ import { TOKEN_MAX_AGE_MS } from "../utils/token";
  * The session cookie is httpOnly, so the token is never readable by JavaScript.
  *
  * In production the frontend (e.g. Vercel) and the API (e.g. Render) usually sit on
- * different sites, which forces SameSite=None — and SameSite=None requires Secure,
+ * different sites, which forces SameSite=None, and SameSite=None requires Secure,
  * i.e. HTTPS on both ends. Deployments that share a parent domain can set
  * COOKIE_SAMESITE=lax and COOKIE_DOMAIN for a stricter setup.
  */

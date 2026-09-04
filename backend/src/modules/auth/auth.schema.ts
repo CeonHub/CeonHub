@@ -22,7 +22,7 @@ export const nameSchema = z
 
 /**
  * Only CANDIDATE and EMPLOYER can be chosen at registration. ADMIN accounts are
- * created by the seed script or by promoting a user directly in the database —
+ * created by the seed script or by promoting a user directly in the database,
  * role is never accepted from the client for privileged access.
  */
 export const registerSchema = z.object({
@@ -33,7 +33,7 @@ export const registerSchema = z.object({
 });
 
 /**
- * Staff sign-up. The role is not accepted from the client here either — reaching
+ * Staff sign-up. The role is not accepted from the client here either, so reaching
  * this endpoint at all is what asks for ADMIN, and the email domain is the gate.
  *
  * Note this proves only that the address is *on* the domain, not that the person

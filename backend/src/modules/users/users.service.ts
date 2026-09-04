@@ -68,7 +68,7 @@ export async function getSessionUser(userId: string): Promise<SessionUser> {
       role: true,
       status: true,
       createdAt: true,
-      // Mapped to booleans below — neither value is ever returned to a client.
+      // Mapped to booleans below. Neither value is ever returned to a client.
       passwordHash: true,
       linkedinId: true,
       candidateProfile: {

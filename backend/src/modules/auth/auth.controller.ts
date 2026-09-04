@@ -15,7 +15,7 @@ export const registerAdmin: RequestHandler = async (req, res) => {
   sendSuccess(res, { user }, 201);
 };
 
-/** Staff only — candidates and employers sign in through LinkedIn. */
+/** Staff only. Candidates and employers sign in through LinkedIn. */
 export const login: RequestHandler = async (req, res) => {
   const input = loginSchema.parse(req.body);
   const { token, user } = await authService.login(input);

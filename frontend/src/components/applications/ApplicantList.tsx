@@ -11,7 +11,7 @@ import { APPLICATION_STATUS_LABELS, formatRelative } from "@/lib/format";
 import type { Application, ApplicationStatus } from "@/lib/types";
 import { ApplicationStatusBadge } from "./ApplicationStatusBadge";
 
-/** Statuses an employer can set — withdrawing is the candidate's decision. */
+/** Statuses an employer can set. Withdrawing is the candidate's decision. */
 const EMPLOYER_STATUSES: ApplicationStatus[] = [
   "SUBMITTED",
   "REVIEWING",
@@ -94,7 +94,7 @@ function ApplicantRow({
             {candidate ? candidate.name : "Candidate"}
             {showJob && (
               <>
-                <span className="text-ink-400"> — </span>
+                <span className="text-ink-400"> · </span>
                 <Link
                   href={`/jobs/${application.job.id}`}
                   className="font-normal text-primary-700 hover:underline"

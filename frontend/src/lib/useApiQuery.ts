@@ -20,7 +20,7 @@ interface Result<T> {
 /**
  * Minimal data fetching for client pages: request, loading, error, retry.
  *
- * Deliberately not a caching library — the MVP has no need for one, and every
+ * Deliberately not a caching library. The MVP has no need for one, and every
  * dashboard list is small and user-specific.
  */
 export function useApiQuery<T>(

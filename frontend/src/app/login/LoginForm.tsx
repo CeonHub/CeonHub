@@ -39,7 +39,7 @@ export function LoginForm() {
         <Link href="/register" className="font-medium text-primary-700 hover:underline">
           Create an account
         </Link>{" "}
-        — it also takes one click.
+        in one click.
       </p>
     </div>
   );

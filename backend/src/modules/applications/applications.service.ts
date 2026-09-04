@@ -80,7 +80,7 @@ type ApplicationRow = {
 /**
  * Candidates see the job they applied to; employers additionally see who applied.
  * The candidate's email and resume are only included for the employer whose job it
- * is (and for admins) — never for other candidates.
+ * is (and for admins), never for other candidates.
  */
 function toApplicationDto(row: ApplicationRow, includeCandidate: boolean) {
   const base = {

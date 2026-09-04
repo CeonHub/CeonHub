@@ -12,7 +12,7 @@ import { formatDate } from "@/lib/format";
 import type { SessionUser } from "@/lib/types";
 import { useAuth } from "@/providers/AuthProvider";
 
-/** Account details and password change — identical for candidates and employers. */
+/** Account details and password change, identical for candidates and employers. */
 export function AccountSettings({ user }: { user: SessionUser }) {
   return (
     <div className="grid gap-6 lg:grid-cols-2">

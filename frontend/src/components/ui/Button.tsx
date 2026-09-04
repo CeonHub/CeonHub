@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 import { Spinner } from "./Spinner";
 
 /**
- * `secondary` describes the button's rank, not its colour — it is the quiet,
+ * `secondary` describes the button's rank, not its colour. It is the quiet,
  * outlined action. `accent` is the one that paints itself in the supporting
  * brand hue (`secondary-*`), for the second call to action in a pair.
  */
@@ -18,7 +18,7 @@ const BASE =
 
 /**
  * The filled variants carry their edge as an inset ring rather than a border, so
- * the button's box stays exactly the height the size says it is — a 1px border
+ * the button's box stays exactly the height the size says it is. A 1px border
  * on a 44px control is the difference between a row of buttons lining up with
  * the input next to them and not.
  */
@@ -88,7 +88,7 @@ interface ButtonLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   children: ReactNode;
 }
 
-/** A link that looks like a button — used for navigation, never for actions. */
+/** A link that looks like a button, used for navigation and never for actions. */
 export function ButtonLink({
   href,
   variant = "primary",

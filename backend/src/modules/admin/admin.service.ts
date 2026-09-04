@@ -5,7 +5,11 @@ import { toSkipTake } from "../../utils/pagination";
 import { paginated, type PaginatedData } from "../../utils/response";
 import type { AuthUser } from "../../types/express";
 import type { JobStatus, Role, UserStatus } from "../../generated/prisma/enums";
-import type { ListAdminJobsInput, ListUsersInput } from "./admin.schema";
+import type {
+  ListAdminCompaniesInput,
+  ListAdminJobsInput,
+  ListUsersInput,
+} from "./admin.schema";
 
 export interface AdminUserDto {
   id: string;
@@ -184,6 +188,62 @@ export async function setJobStatus(
 
   const { _count, ...rest } = updated;
   return { ...rest, applicationCount: _count.applications };
+}
+
+export interface AdminCompanyDto {
+  id: string;
+  name: string;
+  slug: string;
+  location: string | null;
+  country: string | null;
+  createdAt: Date;
+  jobCount: number;
+  publishedJobCount: number;
+}
+
+export async function listCompanies(
+  input: ListAdminCompaniesInput,
+): Promise<PaginatedData<AdminCompanyDto>> {
+  const where = input.q
+    ? { name: { contains: input.q, mode: "insensitive" as const } }
+    : {};
+
+  const [rows, total] = await Promise.all([
+    prisma.company.findMany({
+      where,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        location: true,
+        country: true,
+        createdAt: true,
+        _count: { select: { jobs: true } },
+      },
+      orderBy: { name: "asc" },
+      ...toSkipTake(input),
+    }),
+    prisma.company.count({ where }),
+  ]);
+
+  // A second pass rather than a filtered _count: Prisma cannot return two counts
+  // of the same relation in one select.
+  const published = await prisma.job.groupBy({
+    by: ["companyId"],
+    where: { companyId: { in: rows.map((row) => row.id) }, status: "PUBLISHED" },
+    _count: { _all: true },
+  });
+  const publishedByCompany = new Map(
+    published.map((entry) => [entry.companyId, entry._count._all]),
+  );
+
+  const items = rows.map(({ _count, ...company }) => ({
+    ...company,
+    jobCount: _count.jobs,
+    publishedJobCount: publishedByCompany.get(company.id) ?? 0,
+  }));
+
+  return paginated(items, total, input.page, input.pageSize);
 }
 
 export interface PlatformStats {

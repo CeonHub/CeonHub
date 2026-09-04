@@ -12,7 +12,8 @@ jobsRouter.get("/meta", controller.meta);
 // Employer-owned listing, declared before "/:id".
 jobsRouter.get("/mine", requireAuth, requireRole("EMPLOYER"), controller.listMine);
 
-jobsRouter.post("/", requireAuth, requireRole("EMPLOYER"), controller.create);
+// Admins post too, naming the company in the body (see companyIdForNewJob).
+jobsRouter.post("/", requireAuth, requireRole("EMPLOYER", "ADMIN"), controller.create);
 
 // optionalAuth: the response depends on who is asking (owner, invited candidate, …).
 jobsRouter.get("/:id", optionalAuth, controller.getById);

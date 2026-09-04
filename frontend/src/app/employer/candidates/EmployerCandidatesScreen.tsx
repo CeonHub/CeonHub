@@ -128,7 +128,7 @@ function EmployerCandidates() {
       ) : (
         <EmptyState
           title="No candidates match this search"
-          description="Try a broader search — or post a public job so candidates can find you."
+          description="Try a broader search, or post a public job so candidates can find you."
         />
       )}
 

@@ -29,8 +29,8 @@ export function PrivateHiring() {
 
           <p className="mt-6 max-w-xl leading-relaxed text-ink-400">
             Replacement hires, confidential projects, or a role you only want to offer to three
-            people. Mark a job private and it stays out of public search and out of search engines —
-            only the candidates you invite can see or apply to it.
+            people. Mark a job private and it stays out of public search and out of search engines.
+            Only the candidates you invite can see or apply to it.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">

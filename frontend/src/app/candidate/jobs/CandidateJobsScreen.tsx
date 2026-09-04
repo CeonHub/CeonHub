@@ -22,7 +22,7 @@ export function CandidateJobsScreen() {
 
 /**
  * Deliberately simple matching: the candidate's own skills, one at a time, plus
- * their desired employment type. No recommendation engine — the filter is visible
+ * their desired employment type. No recommendation engine: the filter is visible
  * and the candidate stays in control of it.
  */
 function CandidateJobs() {

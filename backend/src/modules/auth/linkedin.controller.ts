@@ -43,7 +43,7 @@ function redirectToFrontend(res: Response, path: string): void {
   res.redirect(`${env.FRONTEND_URL}${path}`);
 }
 
-/** Failures come back as a page, not JSON — the browser is mid-navigation. */
+/** Failures come back as a page, not JSON, because the browser is mid-navigation. */
 function redirectWithError(res: Response, message: string): void {
   redirectToFrontend(res, `/login?error=${encodeURIComponent(message)}`);
 }

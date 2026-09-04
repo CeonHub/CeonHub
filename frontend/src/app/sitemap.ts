@@ -13,6 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/companies`, changeFrequency: "daily", priority: 0.6 },
     { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.4 },
     { url: `${SITE_URL}/how-it-works`, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${SITE_URL}/careers`, changeFrequency: "weekly", priority: 0.5 },
   ];
 
   const [jobs, companies] = await Promise.all([

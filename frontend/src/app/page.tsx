@@ -11,7 +11,7 @@ import { apiFetch } from "@/lib/api";
 import type { Company, JobSummary, Paginated } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "CeonHub — Find work. Hire talent. Connect privately.",
+  title: "CeonHub: Find work. Hire talent. Connect privately.",
   description:
     "A US hiring marketplace built for speed: immediate starts, freelance projects, side income, internships, and private opportunities you can only reach by invitation.",
   alternates: { canonical: "/" },
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 /**
  * Rendered per request, with each API call cached for five minutes (see the
  * `revalidate` options below). Prerendering the whole page at build time would bake
- * in whatever the API returned during the build — including nothing at all, if the
+ * in whatever the API returned during the build, including nothing at all, if the
  * API was not reachable yet.
  */
 export const dynamic = "force-dynamic";

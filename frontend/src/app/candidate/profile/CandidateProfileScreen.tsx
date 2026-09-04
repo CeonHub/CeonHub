@@ -259,8 +259,8 @@ function ProfileFields({
                 <Select
                   id="profileVisibility"
                   options={[
-                    { value: "PUBLIC", label: "Public — employers can find me" },
-                    { value: "PRIVATE", label: "Private — hide me from search" },
+                    { value: "PUBLIC", label: "Public (employers can find me)" },
+                    { value: "PRIVATE", label: "Private (hidden from search)" },
                   ]}
                   value={form.profileVisibility}
                   onChange={(event) =>

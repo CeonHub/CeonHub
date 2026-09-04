@@ -17,7 +17,7 @@ export interface AuthResult {
  *
  * The email domain is the only thing standing between a stranger and an admin
  * account, so the check is repeated here rather than trusted from the schema
- * alone — this function is what a future caller (a CLI, a seed) would reach for,
+ * alone. This function is what a future caller (a CLI, a seed) would reach for,
  * and it must not depend on its caller having validated first.
  */
 export async function registerAdmin(input: AdminRegisterInput): Promise<AuthResult> {

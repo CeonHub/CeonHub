@@ -30,7 +30,7 @@ export class CloudinaryStorageService implements StorageService {
 
     return {
       // For raw resources the public id carries the extension, and it is what
-      // delete() needs later — so it is the key we persist.
+      // delete() needs later, so it is the key we persist.
       key: uploaded.public_id,
       url: uploaded.secure_url,
       fileName,
@@ -58,7 +58,7 @@ export class CloudinaryStorageService implements StorageService {
   }
 
   /**
-   * `<base>/<folder>/<uuid>-<name><ext>` — the uuid keeps two people uploading
+   * `<base>/<folder>/<uuid>-<name><ext>`. The uuid keeps two people uploading
    * "cv.pdf" from colliding, and the readable tail keeps the download filename
    * meaningful, since browsers name the file after the last URL segment.
    */

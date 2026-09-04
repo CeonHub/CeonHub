@@ -34,7 +34,7 @@ export function verifyToken(token: string): TokenPayload | null {
 }
 
 /**
- * Short-lived signed payloads used outside sessions — currently the OAuth `state`
+ * Short-lived signed payloads used outside sessions, currently the OAuth `state`
  * parameter, which must survive a round trip through LinkedIn untampered.
  */
 export function signShortLivedToken(payload: object, expiresInSeconds: number): string {

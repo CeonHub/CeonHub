@@ -7,7 +7,7 @@ import { Container } from "@/components/layout/Container";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { JobStatusBadge } from "@/components/jobs/JobStatusBadge";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { CONTROL_BORDER, CONTROL_CLASSES } from "@/components/ui/Input";
 import { Pagination } from "@/components/ui/Pagination";
@@ -65,7 +65,8 @@ function AdminJobs() {
     <>
       <PageHeader
         title="Jobs"
-        description="Hide a job to remove it from public search and lock it for its employer."
+        description="Post under any company, edit any job, and hide one to pull it out of public search and lock it for its employer."
+        action={<ButtonLink href="/admin/jobs/new">Post a job</ButtonLink>}
       />
 
       <form
@@ -114,7 +115,15 @@ function AdminJobs() {
           />
         </>
       ) : (
-        <EmptyState title="No jobs match this search" />
+        <EmptyState
+          title={filters.q || filters.status ? "No jobs match this search" : "No jobs yet"}
+          description={
+            filters.q || filters.status
+              ? undefined
+              : "Nothing has been posted on CeonHub yet. Staff can post the first one."
+          }
+          action={<ButtonLink href="/admin/jobs/new">Post a job</ButtonLink>}
+        />
       )}
     </>
   );
@@ -141,7 +150,7 @@ function JobRow({ job, onChanged }: { job: AdminJobRow; onChanged: () => void })
     <li className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
       <div className="min-w-0">
         <p className="font-medium text-ink-900">
-          <Link href={`/jobs/${job.id}`} className="hover:text-primary-700">
+          <Link href={`/admin/jobs/${job.id}`} className="hover:text-primary-700">
             {job.title}
           </Link>
         </p>
@@ -155,6 +164,10 @@ function JobRow({ job, onChanged }: { job: AdminJobRow; onChanged: () => void })
       <div className="flex items-center gap-3">
         {job.private && <Badge tone="primary">Private</Badge>}
         <JobStatusBadge status={job.status} />
+
+        <ButtonLink href={`/admin/jobs/${job.id}`} variant="secondary" size="sm">
+          Manage
+        </ButtonLink>
 
         {job.status === "HIDDEN" ? (
           <Button variant="secondary" size="sm" disabled={busy} onClick={() => setStatus("PUBLISHED")}>

@@ -28,6 +28,7 @@ const SECTIONS = [
     links: [
       { href: "/about", label: "About" },
       { href: "/how-it-works", label: "How it works" },
+      { href: "/careers", label: "Careers" },
       { href: "/login", label: "Sign in" },
     ],
   },
@@ -48,7 +49,7 @@ export function Footer() {
               <Image src={longLogo} alt="" className="h-9 w-auto" sizes="160px" />
             </Link>
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-ink-500">
-              Find work, hire talent, and connect privately across the US — a center of network for
+              Find work, hire talent, and connect privately across the US. A center of network for
               people and the companies looking for them.
             </p>
           </div>
@@ -74,7 +75,7 @@ export function Footer() {
 
         <div className="mt-14 border-t border-night-line pt-8">
           <p className="text-sm text-ink-500">
-            © {new Date().getFullYear()} CeonHub — find work, hire talent, connect privately.
+            © {new Date().getFullYear()} CeonHub. Find work, hire talent, connect privately.
           </p>
         </div>
       </Container>

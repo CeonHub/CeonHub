@@ -1,5 +1,6 @@
 import { prisma } from "../../database/prisma";
 import { ApiError } from "../../utils/apiError";
+import { recordAudit } from "../../utils/audit";
 import { paginated, type PaginatedData } from "../../utils/response";
 import { toSkipTake } from "../../utils/pagination";
 import { uniqueSlug } from "../../utils/slug";
@@ -54,7 +55,37 @@ async function assertCanManage(user: AuthUser, companyId: string): Promise<void>
   }
 }
 
+async function nextCompanySlug(name: string): Promise<string> {
+  return uniqueSlug(name, async (candidate) => {
+    const existing = await prisma.company.findUnique({
+      where: { slug: candidate },
+      select: { id: true },
+    });
+    return existing !== null;
+  });
+}
+
 export async function createCompany(user: AuthUser, input: CreateCompanyInput): Promise<CompanyDto> {
+  // Staff create companies that no employer account owns: CeonHub's own listing
+  // for the careers page, and any employer being onboarded by hand. Nothing is
+  // linked to an employer profile, so an employer can still claim one later.
+  if (user.role === "ADMIN") {
+    const company = await prisma.company.create({
+      data: { ...input, slug: await nextCompanySlug(input.name) },
+      select: COMPANY_FIELDS,
+    });
+
+    await recordAudit({
+      actorId: user.id,
+      action: "company.created",
+      entityType: "COMPANY",
+      entityId: company.id,
+      metadata: { name: company.name, slug: company.slug },
+    });
+
+    return company;
+  }
+
   const profile = await prisma.employerProfile.findUnique({
     where: { userId: user.id },
     select: { companyId: true },
@@ -65,13 +96,7 @@ export async function createCompany(user: AuthUser, input: CreateCompanyInput): 
     throw ApiError.conflict("Your account is already linked to a company");
   }
 
-  const slug = await uniqueSlug(input.name, async (candidate) => {
-    const existing = await prisma.company.findUnique({
-      where: { slug: candidate },
-      select: { id: true },
-    });
-    return existing !== null;
-  });
+  const slug = await nextCompanySlug(input.name);
 
   return prisma.$transaction(async (tx) => {
     const company = await tx.company.create({

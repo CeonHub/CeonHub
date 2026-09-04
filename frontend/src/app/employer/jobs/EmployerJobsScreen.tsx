@@ -118,7 +118,7 @@ function EmployerJobs() {
       ) : (
         <EmptyState
           title="No jobs yet"
-          description="Post your first role — it takes a couple of minutes."
+          description="Post your first role. It takes a couple of minutes."
           action={<ButtonLink href="/employer/jobs/new">Post a job</ButtonLink>}
         />
       )}

@@ -34,6 +34,7 @@ const ROLE_LINKS: Record<Role, Array<{ href: string; label: string }>> = {
     { href: "/admin", label: "Overview" },
     { href: "/admin/users", label: "Users" },
     { href: "/admin/jobs", label: "Jobs" },
+    { href: "/admin/companies", label: "Companies" },
   ],
 };
 
@@ -173,7 +174,7 @@ function NavLink({
   );
 }
 
-/** Two bars that cross on open — cheaper than shipping an icon set for one glyph. */
+/** Two bars that cross on open, cheaper than shipping an icon set for one glyph. */
 function MenuIcon({ open }: { open: boolean }) {
   return (
     <span aria-hidden="true" className="relative block h-4 w-5">

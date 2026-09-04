@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 
 /**
  * The CeonHub horizontal lockup. Imported as a static asset so Next emits width,
- * height and a content hash — no layout shift, no unoptimised runtime lookup.
+ * height and a content hash: no layout shift, no unoptimised runtime lookup.
  *
  * The lockup is wide (roughly 4.4:1), so height drives it and width follows: at
  * the header's 32px it comes out around 142px across, which is the proportion

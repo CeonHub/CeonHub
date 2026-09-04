@@ -9,7 +9,7 @@ companiesRouter.get("/", controller.list);
 
 // Employer-owned. Declared before "/:id" so "mine" is not read as an id.
 companiesRouter.get("/mine", requireAuth, requireRole("EMPLOYER"), controller.getMine);
-companiesRouter.post("/", requireAuth, requireRole("EMPLOYER"), controller.create);
+companiesRouter.post("/", requireAuth, requireRole("EMPLOYER", "ADMIN"), controller.create);
 companiesRouter.patch("/:id", requireAuth, requireRole("EMPLOYER", "ADMIN"), controller.update);
 
 // Public, by id or slug.

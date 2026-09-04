@@ -10,7 +10,8 @@ import type { Role } from "@/lib/types";
  * This is a plain link, not a fetch: the browser has to navigate to LinkedIn and
  * come back to the API's callback, which then sets the session cookie and redirects
  * to the app. `role` and `next` are passed to the API, which puts them inside the
- * OAuth `state` — LinkedIn ignores query parameters on the registered callback URL.
+ * OAuth `state`, because LinkedIn ignores query parameters on the registered
+ * callback URL.
  */
 export function LinkedInButton({
   role,

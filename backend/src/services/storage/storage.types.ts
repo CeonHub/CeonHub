@@ -20,7 +20,7 @@ export interface SaveFileInput {
  * Everything the application knows about file storage.
  *
  * Business logic depends on this interface only, so adding an S3-compatible driver
- * is a matter of implementing three methods and extending the factory — no changes
+ * is a matter of implementing three methods and extending the factory, with no changes
  * to controllers or services. See docs/architecture.md ("Storage").
  */
 export interface StorageService {
